@@ -3,6 +3,116 @@
 #include<vector>
 #include<stack>
 using namespace std;
+/*
+用栈实现队列
+class MyQueue {
+public:
+	stack<int> s1;
+	stack<int> s2;
+	/** Initialize your data structure here. 
+	MyQueue()
+	{
+	}
+
+	//** Push element x to the back of queue. 
+	void push(int x)
+	{
+		s1.push(x);
+	}
+
+	//** Removes the element from in front of queue and returns that element. 
+	int pop(
+	{
+		if (s2.empty())
+		{
+			while (!s1.empty())
+			{
+				s2.push(s1.top());
+				s1.pop();
+			}
+		}
+		int tem = s2.top();
+		s2.pop();
+		return tem;
+	}
+
+	//** Get the front element. 
+	int peek()
+	{
+		if (s2.empty())
+		{
+			while (!s1.empty())
+			{
+				s2.push(s1.top());
+				s1.pop();
+			}
+		}
+		int tem = s2.top();
+		return tem;
+
+	}
+
+	//** Returns whether the queue is empty. 
+	bool empty()
+	{
+		return s1.empty() && s2.empty();
+	}
+};*/
+
+/**
+* Your MyQueue object will be instantiated and called as such:
+* MyQueue* obj = new MyQueue();
+* obj->push(x);
+* int param_2 = obj->pop();
+* int param_3 = obj->peek();
+* bool param_4 = obj->empty();
+*/
+
+
+/**二叉树后续遍历
+* Definition for a binary tree node.
+* struct TreeNode {
+*     int val;
+*     TreeNode *left;
+*     TreeNode *right;
+*     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+* };
+
+class Solution {
+public:
+	vector<int> postorderTraversal(TreeNode* root)
+	{
+		vector<int> res;
+		stack<TreeNode*> st;
+		if (root == nullptr)
+			return res;
+		TreeNode* pre = nullptr;
+		while (root || !st.empty())
+		{
+			if (root)
+			{
+				st.push(root);
+				root = root->left;
+			}
+			else
+			{
+				root = st.top();
+				if (root->right == nullptr || root->right == pre)
+				{
+					res.push_back(root->val);
+					pre = root;
+					root = nullptr;
+					st.pop();
+				}
+				else
+				{
+					root = root->right;
+				}
+			}
+		}
+		return res;
+	}
+};*/
 
 
 /*二叉树的中序遍历
