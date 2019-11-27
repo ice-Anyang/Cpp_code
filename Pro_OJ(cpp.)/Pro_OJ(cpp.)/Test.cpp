@@ -2,9 +2,119 @@
 #include<iostream>
 #include<vector>
 #include<stack>
+#include<string>
 using namespace std;
 /*
-用栈实现队列
+//测试题
+//1.字符集合
+int main()
+{
+	string str;
+	while (cin >> str)
+	{
+		int count[256] = {0};//存字符
+		size_t size = str.size();
+		for (int i = 0; i < size; ++i)
+		{
+			if (0 == count[str[i]])
+				cout << str[i];//不同打印输出
+			count[str[i]]++;//出现则加一
+		}
+		cout << endl;
+	}
+	return 0;
+}
+
+////2.有一个排过序的数组，包含n个整数，但是这个数组向左进行了一定长度的移位，例如，原数组为[1,2,3,4,5,6]，向左移位5个位置即变成了[6,1,2,3,4,5],现在对于移位后的数组，需要查找某个元素的位置。请设计一个复杂度为log级别的算法完成这个任务。
+//给定一个int数组A，为移位后的数组，同时给定数组大小n和需要查找的元素的值x，请返回x的位置(位置从零开始)。保证数组中元素互异。
+//测试样例：
+//[6,1,2,3,4,5],6,6
+//返回：0
+
+class Finder {
+public:
+	int findElement(vector<int> A, int n, int x)
+	{
+		int left = 0;
+		int right = n - 1;
+		while (left <= right)
+		{
+			int mid = left + ((right - left) >> 1);
+			if (A[mid] == x)
+				return mid;
+			if (x > A[mid])
+			{
+				if (A[mid] < A[left] && x > A[right])
+					right = mid - 1;
+				else
+					left = mid + 1;
+			}
+			else
+			{
+				if (A[mid]>A[left] && x < A[left])
+					left = mid + 1;
+				else
+					right = mid - 1;
+			}
+		}
+		return -1;
+	}
+};*/
+
+
+//模板
+//template<typename T1,class T2>
+//template<typename T1,typename T2>
+//template<class t1,class t2>
+
+
+
+//225.用队列实现栈
+//class MyStack {
+//	queue<int> Q1;
+//public:
+//	/** Initialize your data structure here. */
+//	MyStack()
+//	{
+//
+//	}
+//
+//	/** Push element x onto stack. */
+//	void push(int x)
+//	{
+//		Q1.push(x);
+//	}
+//
+//	/** Removes the element on top of the stack and returns that element. */
+//	int pop()
+//	{
+//		int size = Q1.size();
+//		for (int i = 0; i<size - 1; ++i)
+//		{
+//			Q1.push(Q1.front());
+//			Q1.pop();
+//		}
+//		int tem = Q1.front();
+//		Q1.pop();
+//		return tem;
+//	}
+//
+//	/** Get the top element. */
+//	int top()
+//	{
+//		return Q1.back();
+//	}
+//
+//	/** Returns whether the stack is empty. */
+//	bool empty()
+//	{
+//		return Q1.empty();
+//	}
+//};
+//
+
+/*
+224.用栈实现队列
 class MyQueue {
 public:
 	stack<int> s1;
@@ -69,7 +179,7 @@ public:
 */
 
 
-/**二叉树后续遍历
+/**223.二叉树后续遍历
 * Definition for a binary tree node.
 * struct TreeNode {
 *     int val;
@@ -115,7 +225,7 @@ public:
 };*/
 
 
-/*二叉树的中序遍历
+/*222.二叉树的中序遍历
 
 * Definition for a binary tree node.
 * struct TreeNode {
@@ -245,7 +355,7 @@ public:
 */
 
 	
-/*2.压栈和出栈
+/*221.压栈和出栈
 bool IsPopOrder(vector<int> pushV, vector<int> popV)
 {
 	//if (pushV.empty() || popV.empty() || pushV.size() != popV.size())
