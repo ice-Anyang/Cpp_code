@@ -6,9 +6,95 @@
 #include<string>
 using namespace std;
 
+/*429. N叉树的层序遍历
+// Definition for a Node.
+class Node {
+public:
+int val;
+vector<Node*> children;
 
+Node() {}
 
-/*牛客。二叉树镜像
+Node(int _val) {
+val = _val;
+}
+
+Node(int _val, vector<Node*> _children) {
+val = _val;
+children = _children;
+}
+};
+
+class Solution {
+public:
+	vector<vector<int>> levelOrder(Node* root)
+	{
+		if (root == NULL)
+			return{};
+		vector<vector<int>> ans;
+		vector<int> tmp;
+		queue<Node*> q;
+		q.push(root);
+		int CurLayerSize = q.size();
+		while (!q.empty()){
+			Node* cur = q.front();
+			tmp.push_back(cur->val);
+			q.pop();
+			for (auto node : cur->children)
+				q.push(node);
+			if (--CurLayerSize == 0)
+			{//当前层遍历完毕时
+				ans.push_back(tmp);
+				CurLayerSize = q.size();
+				tmp.clear();
+			}
+		}
+		return ans;
+	}
+};
+*/
+
+/**515. 在每个树行中找最大值
+* Definition for a binary tree node.
+* struct TreeNode {
+*     int val;
+*     TreeNode *left;
+*     TreeNode *right;
+*     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+* };
+
+class Solution
+{
+public:
+	vector<int> largestValues(TreeNode* root)
+	{
+		queue<TreeNode*> q;
+		if (root)
+			q.push(root);
+		vector<int> res;
+		while (!q.empty())
+		{
+			int n = q.size(), now = INT_MIN;
+			while (n--)
+			{
+				TreeNode* tmp = q.front();
+				q.pop();
+				if (tmp->val>now)
+					now = tmp->val;
+				if (tmp->left)
+					q.push(tmp->left);
+				if (tmp->right)
+					q.push(tmp->right);
+			}
+			res.push_back(now);
+		}
+		return res;
+	}
+};
+
+*/
+
+/*《牛客》二叉树镜像
 struct TreeNode {
 int val;
 struct TreeNode *left;
