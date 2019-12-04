@@ -6,6 +6,81 @@
 #include<string>
 using namespace std;
 
+
+
+
+/**《牛客》输入一个链表，按链表从尾到头的顺序返回一个ArrayList.
+*  struct ListNode {
+*        int val;
+*        struct ListNode *next;
+*        ListNode(int x) :
+*              val(x), next(NULL) {
+*        }
+*  };
+
+class Solution {
+public:
+	vector<int> printListFromTailToHead(ListNode* head)
+	{
+		vector<int> rec;
+		ListNode* buf = head;
+		ListNode* pre = buf;
+		if (head == nullptr)
+			return rec;
+		while (head->next != nullptr)
+		{
+			buf = head->next;
+			head->next = buf->next;
+			buf->next = pre;
+			pre = buf;
+		}
+		while (buf)
+		{
+			rec.push_back(buf->val);
+			buf = buf->next;
+		}
+		return rec;
+	}
+};*/
+
+
+/*题目描述《牛客》替换空格
+请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+class Solution {
+public:
+	void replaceSpace(char *str, int length)
+	{
+		int count = 0;
+		for (int i = 0; i<length; ++i)
+		{
+			if (*(str + i) == ' ')
+				count++;
+		}
+		for (int i = length - 1; i >= 0; --i)
+		{
+			if (str[i] != ' ')
+				str[i + 2 * count] = str[i];
+			else
+			{
+				str[i + 2 * count] = '0';
+				str[i + 2 * count - 1] = '2';
+				str[i + 2 * count - 2] = '%';
+				count--;
+			}
+	
+		}
+		//string s(str);
+		//int i=0;        
+		//while((i=s.find(' ',i))>-1)
+		//{           
+		//	s.erase(i,1);            
+		//	s.insert(i,"%20");                     
+		//}        
+		//auto ret=s.c_str();        
+		//strcpy(str,ret);
+	}
+};*/
+
 /*429. N叉树的层序遍历
 // Definition for a Node.
 class Node {
