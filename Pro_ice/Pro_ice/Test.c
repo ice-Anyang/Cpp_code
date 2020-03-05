@@ -4,15 +4,34 @@
 #include<string.h>
 #include<math.h>
 
-int main()
-{
-	char a = 97;
-	char c;
-	c = 'a' + '8' - '3';
-	printf("%d\n", c);
-	printf("%c\n", c);
-	return 0;
-}
+//int main()
+//{
+//	char *arr1 = "Male";
+//	char *arr = "Zhangli";
+//	char *arr2 = "ĞÔ±ğ";
+//	char *arr3 = ".";
+//	char *arr4 = " ";
+//	printf("strlen1 = %d\n", strlen(arr1));
+//	printf("strlen = %d\n", strlen(arr));
+//	printf("strlen2 = %d\n", strlen(arr2));
+//	printf("strlen3 = %d\n", strlen(arr3));
+//	printf("strlen4 = %d\n", strlen(arr4));
+//
+//
+//	return 0;
+//}
+
+
+//
+//int main()
+//{
+//	char a = 97;
+//	char c;
+//	c = 'a' + '8' - '3';
+//	printf("%d\n", c);
+//	printf("%c\n", c);
+//	return 0;
+//}
 //struct student
 //{
 //	long sno;
