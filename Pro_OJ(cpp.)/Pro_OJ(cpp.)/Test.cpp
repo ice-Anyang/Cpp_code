@@ -4,8 +4,255 @@
 #include<queue>
 #include<stack>
 #include<string>
+#include<stdio.h>
+#include<algorithm>
 using namespace std;
 
+
+int StrToInt(string str)
+{
+	int i = 0;
+	int flag = 1, sum = 0;
+	if (str.size() == 0)
+		return 0;
+	//先判断正负号，正号i++跳过，负号将flag改为-1.
+	if (str[i] == '+')
+		i++;
+	if (str[i] == '-')
+	{
+		i++;
+		flag = 1;
+	}
+	while (str[i] != '\0')
+	{
+		if (str[i] == ' ')
+			i++;
+		if (str[i] >= '0'&&str[i] <= '9')//组合数字
+		{
+			sum = sum * 10 + flag*(str[i] - '0');
+			i++;
+		}
+		else
+			return 0;
+	}
+	return sum;
+}
+
+int main()
+{
+	string str = "-a123 456";
+	cout<<StrToInt(str)<<endl;
+	return 0;
+}
+
+//
+//int main()
+//{
+//	int w = 0;
+//	int h = 0;
+//	cin >> w >> h;
+//	vector<vector<int>> vt();
+//	int count=0;
+//	for (int i = 0; i<w; ++i)
+//	{
+//		for (int j = 0; j<h; ++j)
+//		{
+//			if (vt[i][j] == 0)
+//			{
+//				count++;
+//				if (i + 2<w)
+//					vt[i + 2][j] = 1;
+//				if (j + 2<h)
+//					vt[i][j + 2] = 1;
+//			}
+//		}
+//	}
+//	cout << count << endl;
+//	return 0;
+//}
+
+//char fun(char a,char b)
+//{
+//	if (a < b)
+//		return a;
+//	return b;
+//}
+//
+//int main()
+//{
+//	int a = '1', b = '1', c = '2';
+//	cout << fun(fun(a, b), fun(b, c));
+//	return 0;
+//}
+
+//int main()
+//{
+//	int m = 0123;
+//	int n = 123;
+//	printf("%o %o\n", m, n);
+//	return 0;
+//}
+
+
+//int main()
+//{
+//	int num;
+//	cin >> num;
+//	vector<int> vt(num);
+//	for (int i = 0; i<num; ++i)
+//	{
+//		cin >> vt[i];
+//	}
+//	int sum = 0;
+//	for (int i = 0; i<num; ++i)
+//	{
+//		sum = sum + vt[i];
+//		if (vt[i] > sum)
+//			sum = vt[i];
+//	}
+//	cout << sum << endl;
+//	return 0;
+//}
+
+//int main()
+//{
+//	long M = 0;
+//	int N = 0;
+//	int a = 0, b = 0;
+//	int sum[100] = { 0 };
+//	cin >> M >> N;
+//	while (M != 0)
+//	{
+//		a = M%N;
+//		M = M / N;
+//		sum[b] = a;
+//		b++;
+//	}
+//	for (int i = b-1; i >= 0; i--)
+//	{
+//		cout << sum[i];
+//	}
+//	return 0;
+//}
+
+//int main()
+//{
+//	int num1=0, num2=0, num3=0, num4=0;
+//	cin >> num1>> num2>> num3>> num4;
+//	int A, B1, B2, C;
+//	A = (num1 + num3) / 2;
+//	C = (num4 - num2) / 2;
+//	B1 = (num4 + num2) / 2;
+//	B2 = (num3 - num1) / 2;
+//	if (B1 != B2)
+//		cout << "No";
+//	else
+//		cout << A << " " << B1 << " " << C << " " << endl;
+//	return 0;
+//}
+
+//int main()
+//{
+//	vector<int> vt(4);
+//	int num = 0;
+//	int A, B1, B2, C;
+//
+//	A = (vt[0] + vt[2]) / 2;
+//	C = (vt[1] + vt[3]) / 2;
+//	B1 = (vt[3] - vt[0]) / 2;
+//	B2 = (vt[1] + vt[3]) / 2;
+//	if (B1 != B2)
+//		cout << "No" << endl;
+//	cout << A << B1 << C << endl;
+//	return 0;
+//}
+////
+//int main()
+//{
+//	int arr[] = { 1, 3, 5, 7,9 };
+//	int *p = (int*)(&arr + 1);
+//	printf("%d %d", *(arr + 1), *(p - 1));
+//	return 0;
+//}
+
+
+//
+//int cou = 0;
+//int fun(int a)
+//{
+//	cou++;
+//	if (a == 0)
+//		return 1;
+//	else if(a == 1)
+//		return 2;
+//	else
+//	{
+//		return fun(a - 1) + fun(a - 2);
+//	}
+//
+//}
+//int main()
+//{
+//	fun(8);
+//	cout << cou << endl;
+//	return 0;
+//}
+//
+
+
+
+////数组中出现一半的数字
+//
+//int MoreThanHalfNum_Solution(vector<int> numbers)
+//{
+//	sort(numbers.begin(), numbers.end());//先排序
+//	int num = numbers[numbers.size() / 2];
+//	int tem = numbers.size() / 2;
+//	int count = 0;//计数器
+//	for (int i = 0; i<numbers.size(); ++i)
+//	{
+//		if (num == numbers[i])
+//			++count;
+//	}
+//	if (count>tem)
+//		return num;
+//	return 0;
+//}
+//
+//int main()
+//{
+//	vector<int> number = { 1, 5, 2, 1, 5, 5, 5, 5, 5 };
+//	int ret = MoreThanHalfNum_Solution(number);
+//	cout << "ret = "<<ret<< endl;
+//	return 0;
+//}
+
+
+
+////倒置字符串
+//
+//int main()
+//{
+//	string str;
+//	getline(cin, str);
+//	reverse(str.begin(), str.end());
+//	auto itstart = str.begin();
+//	while (itstart != str.end())
+//	{
+//		auto itend = itstart;
+//		while (itend != str.end() && *itend != ' ')
+//		{
+//			itend++;
+//		}
+//		reverse(itstart, itend);
+//		if (itend != str.end())
+//			itstart = itend + 1;
+//		else
+//			itstart = itend;
+//	}
+//	cout << str << endl;
+//	return 0;
+//}
 
 
 
