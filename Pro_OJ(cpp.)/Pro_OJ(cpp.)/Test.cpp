@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS 1
 #include<iostream>
 #include<vector>
 #include<queue>
@@ -6,44 +5,385 @@
 #include<string>
 #include<stdio.h>
 #include<algorithm>
+#include<iostream>
+#include<string>
+#include<vector>
 using namespace std;
 
 
-int StrToInt(string str)
+
+
+/*
+int PassScore(string str)
 {
-	int i = 0;
-	int flag = 1, sum = 0;
-	if (str.size() == 0)
-		return 0;
-	//先判断正负号，正号i++跳过，负号将flag改为-1.
-	if (str[i] == '+')
-		i++;
-	if (str[i] == '-')
+	int sum = 0, s1 = 0, s2 = 0, s3 = 0, s4 = 0, s5 = 0;
+	//1.密码长度
+
+	int len = str.size();
+	if (len < 5)
+		s1 = 5;
+	else if (len >= 8)
+		s1 = 25;
+	else
+		s1 = 10;
+	//字母和数字
+	vector<char> vt1, vt2, vt3, vt4;
+	for (int i = 0; i < len; ++i)
 	{
-		i++;
-		flag = 1;
-	}
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ')
-			i++;
-		if (str[i] >= '0'&&str[i] <= '9')//组合数字
-		{
-			sum = sum * 10 + flag*(str[i] - '0');
-			i++;
-		}
+		if (str[i] <= 'z'&&str[i] >= 'a')
+			vt1.push_back(str[i]);//放小写字母
+		else if (str[i] <= 'Z'&&str[i] >= 'A')
+			vt2.push_back(str[i]);//放大写字母
+		else if (str[i] <= '9'&&str[i] >= '0')
+			vt3.push_back(str[i]);//放数字
 		else
-			return 0;
+			vt4.push_back(str[i]);//放符号
 	}
-	return sum;
+		int len1 = vt1.size();
+		int len2 = vt2.size();
+		int len3 = vt3.size();
+		int len4 = vt4.size();
+		if (len1 == 0 && len2 == 0)
+			s2 = 0;
+		else if (len1 != 0 && len2 != 0)
+			s2 = 20;
+		else
+			s2 = 10;
+		if (len3 == 0)
+			s3 = 0;
+		else if (len3 == 1)
+			s3 = 10;
+		else
+			s3 = 20;
+		//符号
+		if (len4 == 0)
+			s4 = 0;
+		else if (len4 == 1)
+			s4 = 10;
+		else
+			s4 = 20;
+		//奖励
+		if (len1 != 0 && len2 != 0 && len3 != 0 && len4 != 0)
+			s5 = 5;
+		else if ((len2 != 0 || len1 != 0) && len3 != 0 && len4 != 0)
+			s5 = 3;
+		else if ((len2 != 0 || len1 != 0) && len3 != 0)
+			s5 = 2;
+		else
+			s5 = 0;
+		sum = s1 + s2 + s3 + s4 + s5;
+		return sum;
+}
+int main()
+{
+	string str;
+	while (cin >> str)
+	{
+		int sum = PassScore(str);
+		switch (sum / 10)
+		{
+		case 9:
+			cout << "VERY_WEAK" << endl;
+			break;
+		case 8:
+			cout << "WEAK" << endl;
+			break;
+		case 7:
+			cout << "AVERAGE" << endl;
+			break;
+		case 6:
+			cout << "STRONG" << endl;
+			break;
+		case 5:
+			cout << "VERY_STRONG"<<endl;
+			break;
+		default:
+		{
+				   if (sum >= 25)
+					   cout << "SECURE" << endl;
+				   else
+					   cout << "VERY_SECURE" << endl;
+		}
+		}
+	}
+	return 0;
+}*/
+
+//int PassScore(string str)
+//{
+//	int sum = 0, s1 = 0, s2 = 0, s3 = 0, s4 = 0, s5 = 0;
+//	//1.密码长度
+//
+//	int len = str.size();
+//	if (len<5)
+//		s1 = 5;
+//	else if (len >= 8)
+//		s1 = 25;
+//	else
+//		s1 = 10;
+//	//字母和数字
+//	vector<char> vt1, vt2, vt3, vt4;
+//	for (int i = 0; i<len; ++i)
+//	{
+//		if (str[i] <= 'z'&&str[i] >= 'a')
+//			vt1.push_back(str[i]);//放小写字母
+//		else if (str[i] <= 'Z'&&str[i] >= 'A')
+//			vt2.push_back(str[i]);//放大写字母
+//		else if (str[i] <= '9'&&str[i] >= '0')
+//			vt3.push_back(str[i]);//放数字
+//		else
+//			vt4.push_back(str[i]);//放符号
+//		int len1 = vt1.size();
+//		int len2 = vt2.size();
+//		int len3 = vt3.size();
+//		int len4 = vt4.size();
+//		if (len1 == 0 && len2 == 0)
+//			s2 = 0;
+//		else if (len1 != 0 && len2 != 0)
+//			s2 = 20;
+//		else
+//			s2 = 10;
+//		if (len3 == 0)
+//			s3 = 0;
+//		else if(len3 == 1)
+//			s3 = 10;
+//		else
+//			s3 = 20;
+//			//符号
+//			if (len4 == 0)
+//				s4 = 0;
+//			else if(len4 == 1)
+//				s4 = 10;
+//		else
+//			s4 = 20;
+//			//奖励
+//			if (len1 != 0 && len2 != 0 && len3 != 0 && len4 != 0)
+//				s5 = 5;
+//			else if ((len2 != 0 || len!=0)&& len3 != 0 && len4 != 0)
+//				s5 = 3;
+//			else if ((len2 != 0 || len!=0)&& len3 != 0)
+//				s5 = 2;
+//			else
+//				s5 = 0;
+//			sum = s1 + s2 + s3 + s4 + s5;
+//			return sum;
+//	}
+//	int main()
+//	{
+//		string str;
+//		while (cin >> str)
+//		{
+//			int sum = PassScore(str);
+//			switch (sum / 10)
+//			{
+//			case 9:
+//				cout << "VERY_WEAK" << endl;
+//				break;
+//			case 8:
+//				cout << "WEAK" << endl;
+//				break;
+//			case 7:
+//				cout << "AVERAGE" << endl;
+//				break;
+//			case 6:
+//				cout << "STRONG" << endl;
+//				break;
+//			case 5:
+//				cout << "VERY_STRONG" < endl;
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//	}
+//
+//int main()
+//{
+//	int I = 1;
+//	if (I <= 0)
+//		printf("****\n");
+//	else
+//		printf("%%%%\n");
+//	return 0;
+//}
+
+
+
+//int func(int m, int n)
+//{
+//	int x = 1, y = 1;
+//	for (int i = 0; i<n; ++i)
+//	{
+//		x = (m + n) - i;
+//		y = i + 1;
+//	}
+//	return x * y;
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	int b = 0;
+//	cin >> a, b;
+//	int tem = func(a, a+b);
+//	cout << tem << endl;
+//	return 0;
+//}
+
+
+
+
+/*
+int addAB(int A, int B)
+{
+	// write code here
+	int tem = 0;
+	while (B)
+	{
+		tem = A&B;
+		A = A^B;
+		B = tem << 1;
+	}
+	return A;
 }
 
 int main()
 {
-	string str = "-a123 456";
-	cout<<StrToInt(str)<<endl;
+	int c = addAB(1, 2);
+	cout << c << endl;
 	return 0;
+}*/
+
+
+//class Test
+//{
+//public:
+//	int a;
+//	int b;
+//	virtual void fun()
+//	{}
+//	Test(int temp1 = 0, int temp2 = 0)
+//	{
+//		a = temp1;
+//		b = temp2;
+//	}
+//	int getA()
+//	{
+//		return a;
+//	}
+//	int getB()
+//	{
+//		return b;
+//	}
+//};
+//
+//
+//
+//int main()
+//{
+//	Test obj(5, 10);
+//	int* pInt = (int*)&obj;
+//	*(pInt + 0) = 100;
+//	*(pInt + 1) = 200;
+//	cout << obj.getA() << endl;
+//	cout << obj.getB() << endl;
+//	return 0;
+//}
+
+
+
+/*
+bool chkParenthesis(string A, int n)
+{
+	// write code here
+	stack<char> st;
+	if (A.empty() == 0)
+		return true;
+	int i = 0;
+	for (i = 0; i<n; ++i)
+	{
+		if (A[i] == '(')
+			st.push(A[i]);
+		else if (A[i] == ')')
+		{
+			if (st.top() == '(')
+				st.pop();
+			else
+				st.push(A[i]);
+		}
+		else
+			return false;
+	}
+	if (st.size() == 0)
+		return true;
+	return false;
 }
+int main()
+{
+	cout << chkParenthesis("()a()((()", 9) << endl;
+	return 0;
+}*/
+//
+//#include<iostream>
+//using namespace std;
+//
+//int main()
+//{
+//	int f1 = 0, f2 = 1;
+//	int num = 0, n = 0;
+//	cin >> n;
+//	while (n>num)
+//	{
+//		num = f1 + f2;
+//		f1 = f2;
+//		f2 = num;
+//	}
+//	int N = 0;
+//	if (num == n)
+//		cout << 0 << endl;
+//	else
+//	{
+//		N = ((num - n) > (n - f1)) ? (n - f1) : (num - n);
+//		cout << N << endl;
+//	}
+//	return 0;
+//}
+
+//int StrToInt(string str)
+//{
+//	int i = 0;
+//	int flag = 1, sum = 0;
+//	if (str.size() == 0)
+//		return 0;
+//	//先判断正负号，正号i++跳过，负号将flag改为-1.
+//	if (str[i] == '+')
+//		i++;
+//	if (str[i] == '-')
+//	{
+//		i++;
+//		flag = 1;
+//	}
+//	while (str[i] != '\0')
+//	{
+//		if (str[i] == ' ')
+//			i++;
+//		if (str[i] >= '0'&&str[i] <= '9')//组合数字
+//		{
+//			sum = sum * 10 + flag*(str[i] - '0');
+//			i++;
+//		}
+//		else
+//			return 0;
+//	}
+//	return sum;
+//}
+//
+//int main()
+//{
+//	string str = "-a123 456";
+//	cout<<StrToInt(str)<<endl;
+//	return 0;
+//}
 
 //
 //int main()
