@@ -10,6 +10,95 @@
 #include<vector>
 using namespace std;
 
+#include<iostream>
+using namespace std;
+
+bool IsPrime(int n)
+{
+	for (int i = 2; i<n; ++i)
+	if (n % i == 0)
+		return false;
+	return true;
+}
+
+void MinSu(int n)
+{
+	int num1 = n / 2;
+	int num2 = n - num1;
+	while (1)
+	{
+		if (IsPrime(num1) && IsPrime(num2))
+			break;
+		num1--;
+		num2++;
+	}
+	cout << num1 << endl;
+	cout << num2 << endl;
+}
+
+int main()
+{
+	int n = 0;
+	while (cin >> n)
+		MinSu(n);
+	return 0;
+}
+
+
+
+
+//void func(const int& v1, const int& v2)
+//{
+//	cout << v1 << endl;
+//	cout << v2 << endl;
+//
+//}
+//int main()
+//{
+//	int i = 0;
+//	func(++i, i++);
+//	return 0;
+//}
+
+
+
+
+/*
+int main()
+{
+	int n[][3] = { 10, 20, 30, 40, 50, 60 };
+	int(*p)[3];
+	p = n;
+	printf("%d,%d,%d", p[0][0], *(p[0] + 1), (*p)[2]);
+
+	return 0;
+}*/
+
+//int main()
+//{
+//	int num = 0;
+//	int count = 0;
+//	int mcount = 0;
+//	while (cin >> num)
+//	{
+//		count = 0;
+//		mcount = 0;
+//		while (num)
+//		{
+//			if (num % 2 != 0)
+//				count++;
+//			else
+//				count = 0;
+//			if (count>mcount)
+//				mcount = count;
+//			num = num / 2;
+//		}
+//		cout << mcount << endl;
+//	}
+//
+//	return 0;
+//}
+
 
 
 
