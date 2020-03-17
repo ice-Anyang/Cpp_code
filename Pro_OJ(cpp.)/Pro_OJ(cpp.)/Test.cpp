@@ -10,6 +10,122 @@
 #include<vector>
 using namespace std;
 
+
+/*
+class Gloves {
+public:
+	int findMinimum(int n, vector<int> left, vector<int> right)
+	{
+		// write code here
+		int LeftRes = 0;
+		int RightRes = 0;
+		int Min1 = 27;
+		int Min2 = 27;
+		for (int i = 0; i<left.size(); ++i)
+		{
+			if (left[i] == 0 && right[i] != 0)
+			{
+				LeftRes += right[i];
+				RightRes += right[i];
+			}
+			if (left[i] != 0 && right[i] == 0)
+			{
+				LeftRes += left[i];
+				RightRes += left[i];
+			}
+			if (left[i] == 0 && right[i] == 0)
+			{
+				LeftRes = left[i];
+				RightRes = right[i];
+				if (LeftRes<Min1)
+					Min1 = left[i];
+				if (RightRes<Min2)
+					Min2 = right[i];
+			}
+		}
+
+		RightRes = RightRes - Min2 + 2;
+		LeftRes = LeftRes - Min1 + 2;
+
+		if (RightRes > LeftRes)
+			return LeftRes;
+		else
+			return RightRes;
+	}
+};
+
+int main()
+{
+	Gloves a;
+	vector<int> arr1;
+	for (int i = 0; i < 4; ++i)
+		cin >> arr1[i];
+	vector<int> arr2;
+	for (int i = 0; i < 4; ++i)
+		cin >> arr2[i];
+	int res = a.findMinimum(4,arr1,arr2);
+	std::cout << res << endl;
+	return 0;
+}
+
+
+/*
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	int num = 0;
+	while (cin >> num)
+	{
+		int count = 0;
+		while (num>0)
+		{
+			if (num & 1)
+				count++;
+			num >>= 1;
+		}
+		cout << count << endl;
+	}
+	return 0;
+}
+
+
+//int main()
+//{
+//	int a[] = { 1, 2, 3, 4 };
+//	int *b = a;
+//	*b += 2;
+//	*(b + 2) = 2;
+//	b++;
+//	printf("%d, %d\n", *b, *(b + 2));
+//	return 0;
+//
+//}
+
+/*
+int main()
+{
+	int a = 0;
+	int sum = 0;
+	vector<int> vt;
+	while (cin >> a)
+	{
+		vt.resize(3 * a);
+		for (int i = 0; i<(3 * a); ++i)
+			cin >> vt[i];
+	} 
+	sort(vt.begin(), vt.end());
+	for (int i = a; i <= 3 * a - 2; i += 2)
+	{
+		sum += vt[i];
+	} 
+	cout << sum << endl;
+	return 0;
+}
+
+
+/*
 #include<iostream>
 using namespace std;
 
