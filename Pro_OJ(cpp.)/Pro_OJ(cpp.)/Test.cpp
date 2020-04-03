@@ -13,6 +13,78 @@ using namespace std;
 
 
 
+/*
+// write your code here cpp
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	int n = 0;
+	while (cin >> n)
+	{
+
+		if (n == 1)
+			cout << 0 << endl;
+		else if (n == 2 || n == 3)
+			cout << 1 << endl;
+		else
+		{
+			int count = 1;
+			while (n>3)
+			{
+				if (n % 3 == 0)
+					n /= 3;
+				else
+					n = n / 3 + 1;
+				count++;
+			}
+			cout << count << endl;
+		}
+	}
+	return 0;
+}
+
+
+/*
+class Solution {
+public:
+	///**
+	//*	正数数组中的最小不可组成和
+	//*	输入：正数数组arr
+	//*	返回：正数数组中的最小不可组成和
+	//
+	int getFirstUnFormedNum(vector<int> arr, int len)
+	{
+		if (len <= 0)
+			return 0;
+		int min = arr[0];
+		int sum = 0;
+		for (int i = 0; i<len; ++i)//求出区间
+		{
+			sum += arr[i];
+			if (arr[i]<min)
+				min = arr[i];
+		}
+		vector<int> vt(sum + 1, 0);
+		for (int i = 0; i<len; ++i)
+		{
+			for (int j = sum; j >= arr[i]; --j)
+			if (vt[j - arr[i]] + arr[i]>vt[j])
+				vt[j] = vt[j - arr[i]] + arr[i];
+		}
+		for (int i = min; i <= sum; ++i)
+		{
+			if (i != vt[i])
+				return i;
+		}
+		return sum + 1;
+	}
+};
+
+
+//<<<<<<< HEAD
+
 
 /*
 // write your code here cpp
