@@ -12,6 +12,7 @@
 using namespace std;
 
 
+<<<<<<< HEAD
 
 
 /*
@@ -72,6 +73,8 @@ public:
 };
 */
 
+=======
+>>>>>>> a4349c18f8e4c0fa32837d5bcda0868c5fef78ee
 /*
 class Gloves {
 public:
