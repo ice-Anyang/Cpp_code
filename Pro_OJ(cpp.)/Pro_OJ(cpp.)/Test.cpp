@@ -12,6 +12,7 @@
 using namespace std;
 
 
+<<<<<<< HEAD
 
 /*
 // write your code here cpp
@@ -84,6 +85,9 @@ public:
 
 
 //<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> fd1c2b72faefe19c54af14fc1c81eabf65c38d46
 
 
 /*
@@ -144,6 +148,11 @@ public:
 };
 */
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> a4349c18f8e4c0fa32837d5bcda0868c5fef78ee
+>>>>>>> fd1c2b72faefe19c54af14fc1c81eabf65c38d46
 /*
 class Gloves {
 public:
