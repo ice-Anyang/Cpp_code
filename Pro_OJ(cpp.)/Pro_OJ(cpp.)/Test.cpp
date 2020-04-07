@@ -12,7 +12,77 @@
 using namespace std;
 
 
-<<<<<<< HEAD
+
+
+/*
+
+//#include<iostream>
+//using namespace std;
+
+int main()
+{
+	int fb[100001];
+	fb[0] = 1; fb[1] = 1;
+	for (int i = 2; i<100001; ++i)
+	{
+		fb[i] = fb[i - 1] + fb[i - 2];
+		fb[i] = fb[i] % 1000000;//取后六位数字
+	}
+	int n = 0;
+	while (cin >> n)
+	{
+		if (n<30)
+			printf("%d\n", fb[n - 1]);
+		else
+			printf("%0.6d\n", fb[n - 1]);
+	}
+	return 0;
+}
+
+
+/*
+// write your code here cpp
+
+int main()
+{
+	int num = 0;
+	while (cin >> num)
+	{
+		cout << num << "=";
+		int* pnum = new int[1000];
+		int j = 0;
+		for (int i = 2; i<=sqrt(num); ++i)
+		{
+			while (num%i == 0)
+			{
+				if (num != 1)
+				{
+					pnum[j] = i;
+					j++;
+					num /= i;
+				}
+			}
+		}
+		if (num != 1)
+		{
+			pnum[j] = num;
+			j++;
+		}
+		for (int i = 0; i<j; ++i)
+		{
+			cout << pnum[i];
+			if (i + 1 < j)
+				cout << "*";
+		}
+		cout << endl;
+		delete pnum;
+	}
+	return 0;
+}
+
+
+
+/*
 
 /*
 // write your code here cpp
@@ -148,11 +218,8 @@ public:
 };
 */
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> a4349c18f8e4c0fa32837d5bcda0868c5fef78ee
->>>>>>> fd1c2b72faefe19c54af14fc1c81eabf65c38d46
+
+
 /*
 class Gloves {
 public:
