@@ -13,6 +13,29 @@ using namespace std;
 
 
 
+/*
+
+int main()
+{
+	int from = 0;
+	int to = 0;
+	long long arr[81] = { 1, 1 };
+	for (int i = 2; i < 80; ++i)
+	{
+		arr[i] = arr[i - 1] + arr[i - 2];
+	}
+	while (cin >> from >> to)
+	{
+		long sum = 0;
+		for (int i = from; i <= to; ++i)
+		{
+			sum += arr[i - 1];
+		}
+		cout << sum << endl;
+	}
+	return 0;
+}
+
 
 /*
 
