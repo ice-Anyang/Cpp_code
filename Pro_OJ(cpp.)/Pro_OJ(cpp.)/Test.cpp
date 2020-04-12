@@ -1,4 +1,5 @@
 #include<iostream>
+#include<stdio.h>
 #include<vector>
 #include<queue>
 #include<stack>
@@ -12,6 +13,63 @@
 using namespace std;
 
 
+
+
+/*
+class Test
+{
+public:
+	Test()
+		: _data(0)
+	{
+		cout << "Test():" << this << endl;
+	}
+	~Test()
+	{
+		cout << "~Test():" << this << endl;
+	}
+private:
+	int _data;
+};
+
+
+void Test2()
+{
+	// 申请单个Test类型的对象
+	Test* p1 = new Test;
+	delete p1;
+	// 申请10个Test类型的对象
+	Test* p2 = new Test[10];
+	delete[] p2;
+}
+
+/*
+int main()
+{
+	Test* p1 = (Test*)malloc(sizeof(Test));
+	free(p1);
+	// 申请10个Test类型的空间
+	Test* p2 = (Test*)malloc(sizeof(Test) * 10);
+	free(p2);
+	return 0;
+}
+
+
+//int main()
+//{
+//	//动态申请一个int 类型的空间
+//	int* ptr = new int;
+//	//初始化为100
+//	int* ptr1 = new int(100);
+//	//动态申请一个数组,大小为10
+//	int* ptr2 = new int[10];
+//
+//	//手动申请就得手动释放。
+//	delete ptr;
+//	delete ptr1;
+//	delete[]ptr2;
+//	return 0;
+//}
 
 /*
 
