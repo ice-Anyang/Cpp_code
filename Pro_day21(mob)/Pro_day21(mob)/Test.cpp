@@ -2,6 +2,11 @@
 #include<iostream>
 using namespace std;
 
+int main()
+{
+	return 0;
+}
+
 //模板的泛化和特化
 /*
 template<class T1, class T2>
