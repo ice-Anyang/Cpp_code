@@ -16,6 +16,44 @@ using namespace std;
 
 
 /*
+class A
+{
+public:
+	A() = default;
+	A(int a) :_a(a)
+	{}
+	~A()
+	{}
+private:
+	int _a;
+
+};
+int main()
+{
+	A a1;
+	A a2(2);
+	return 0;
+}
+
+
+/*
+template<typename T>
+void Swap(T &a, T &b)
+{
+	T c = a;
+	a = b;
+	b = c;
+}
+
+void Swap(double &a, double &b)
+{
+	double c = a;
+	a = b;
+	b = c;
+}
+
+
+/*
 class Test
 {
 public:
