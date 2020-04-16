@@ -16,6 +16,27 @@ using namespace std;
 
 
 /*
+int main()
+{
+	int a = 0;
+	int sum = 0;
+	while (cin >> a)
+	{
+		vector<int> vt;
+		vt.resize(3 * a);
+		for (int i = 0; i<(3 * a); ++i)
+			cin >> vt[i];
+	} 
+	sort(vt.begin(), vt.end());
+	for (int i = a; i <= 3 * a - 2; i += 2)
+	{
+		sum += vt[i];
+	}
+	cout << sum << endl;
+	return 0;
+}
+
+/*
 class A
 {
 public:
