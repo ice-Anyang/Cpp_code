@@ -14,6 +14,39 @@
 using namespace std;
 
 
+
+
+/*
+int main()
+{
+	string str;
+	while (cin >> str)
+	{
+		int flag = 0;
+		for (int i = 0; i<str.size(); ++i)
+		{
+			if (str[i] == '_')
+			{
+				str.erase(str.begin() + i);
+				flag = 1;
+				i--;
+			}
+			else if (flag == 1)
+			{
+				str[i] = toupper(str[i]);//转换大写
+				cout << str[i];
+				flag = 0;
+			}
+			else
+			{
+				cout << str[i];
+			}
+		}
+		cout << endl;
+	}
+
+}
+
 /*//走迷宫
 //求字符串里的数字
 #include<iostream>
