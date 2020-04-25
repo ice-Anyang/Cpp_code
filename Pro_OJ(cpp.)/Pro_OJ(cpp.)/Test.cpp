@@ -1,5 +1,6 @@
 #include<iostream>
 #include<stdio.h>
+#include<list>
 #include<vector>
 #include<queue>
 #include<stack>
@@ -16,6 +17,98 @@ using namespace std;
 
 
 
+/*
+class MaxGap {
+public:
+	int findMaxGap(vector<int> A, int n)
+	{
+		// write code here
+		int Max = 0;
+		int pos = 0;
+		for (int i = 0; i<n; ++i)
+		{
+			if (Max < A[i])
+			{
+				Max = A[i];
+				pos = i;
+			}
+		}
+		if (pos == 0)
+			return A[0] - A[n - 1];
+		if (pos == n - 1)
+			return A[n - 1] - A[0];
+		int leftMax = A[pos] - A[0];
+		int rightMax = A[pos] - A[n - 1];
+		return leftMax > rightMax ? leftMax : rightMax;
+	}
+};
+
+/*
+int main(){
+	int n;
+	while (cin >> n)
+	{
+		vector<int> a(n);
+		for (int i = 0; i < n; i++)
+		{
+			cin >> a[i];
+		}
+		int k, d;
+		cin >> k >> d;
+		vector<vector<long long>> dp_max(n, vector<long long>(k + 1, 0));
+		vector<vector<long long>> dp_min(n, vector<long long>(k + 1, 0));
+		for (int i = 0; i < n; i++)
+		{
+			dp_max[i][1] = a[i];
+			dp_min[i][1] = a[i];
+		}
+		for (int i = 0; i < n; i++){
+			for (int j = 2; j <= k; j++){
+				for (int m = max(0, i - d); m <= i - 1; m++){
+					dp_max[i][j] = max(dp_max[i][j], max(dp_max[m][j - 1] * a[i], dp_min[m][j - 1] * a[i]));
+					dp_min[i][j] = min(dp_min[i][j], min(dp_min[m][j - 1] * a[i], dp_max[m][j - 1] * a[i]));
+				}
+			}
+		}
+		long long max_value = dp_max[k - 1][k];
+		for (int i = k; i < n; i++)
+		{
+			max_value = max(max_value, dp_max[i][k]);
+		}
+		cout << max_value << endl;
+	}
+	return 0;
+}
+
+
+
+/*
+int main()
+{
+	int arr[5] = { 1, 2, 3, 4, 5 };
+
+}
+
+/*
+int main()
+{
+	std::list<int> l1; // 构造空的l1
+	std::list<int> l2(4, 100); // l2中放4个值为100的元素
+	std::list<int> l3(l2.begin(), l2.end()); // 用l2的[begin(), end()）左闭右开的区间构造l3
+	std::list<int> l4(l3); // 用l3拷贝构造l4
+	// 以数组为迭代器区间构造l5
+	int array[] = { 16, 2, 77, 29 };
+	std::list<int> l5(array, array + sizeof(array) / sizeof(int));//区间构造
+	// 用迭代器方式打印l5中的元素
+	for (std::list<int>::iterator it = l5.begin(); it != l5.end(); it++)
+		std::cout << *it << " ";
+	std::cout << endl;
+
+	for (auto& e : l5)
+		std::cout << e << " ";
+	std::cout << endl;
+	return 0;
+}
 /*
 int main()
 {
@@ -47,7 +140,8 @@ int main()
 
 }
 
-/*//走迷宫
+/*
+//走迷宫
 //求字符串里的数字
 #include<iostream>
 #include<queue>
