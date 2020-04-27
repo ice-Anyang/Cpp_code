@@ -13,7 +13,89 @@
 #include<math.h>
 #include<thread>
 using namespace std;
+void PrintList(list<int> L)
+{
+	for (auto& e : L)
+		cout << e << " ";
+	cout << endl;
+}
 
+int main()
+{
+	// 用数组来构造list
+	int array1[] = { 1, 2, 3 };
+	list<int> l1(array1, array1 + sizeof(array1) / sizeof(array1[0]));
+	list<int> l2{ 4, 5, 6 };
+	PrintList(l1);
+	// 交换l1和l2中的元素
+	l1.swap(l2);
+	PrintList(l2);
+	// 将l2中的元素清空
+	l2.clear();
+	cout << l2.size() << endl;
+	return 0;
+}
+
+/*
+void PrintfList(list<int> L)
+{
+	for (auto& e : L)
+		cout << e << " ";
+	cout << endl;
+}
+
+void main()
+{
+	int array[] = { 1, 2, 3 };
+	list<int> L(array, array + sizeof(array) / sizeof(array[0]));
+	// 在list的尾部插入4，头部插入0
+	L.push_back(4);
+	L.push_front(0);
+	// 删除list尾部节点和头部节点
+	PrintfList(L);
+	L.pop_back();
+	L.pop_front();
+	PrintfList(L);
+}
+
+/*
+int main()
+{
+	int arr[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	list<int> ls(arr,arr+sizeof(arr)/sizeof(arr[0]));
+
+	list<int>::iterator it = ls.begin();
+	//正向迭代器
+	while (it != ls.end())
+	{
+		cout << *it<<" ";
+		++it;
+	}
+	cout << endl;
+	//反向迭代器
+	for (list<int>::reverse_iterator it = ls.rbegin(); it != ls.rend(); ++it)
+		cout << *it << " ";
+	cout << endl;
+
+	return 0;
+}
+
+
+/*
+class A{
+
+	void test(float a){ cout << "1"; }
+};
+class B :public A{
+	void test(int b){ cout << "2"; }
+};
+int main()
+{
+	B *b = new B;
+	A *a = new A;
+	a = b;
+	return 0;
+}
 
 
 
