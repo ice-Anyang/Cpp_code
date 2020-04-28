@@ -13,6 +13,11 @@
 #include<math.h>
 #include<thread>
 using namespace std;
+
+
+
+
+/*
 void PrintList(list<int> L)
 {
 	for (auto& e : L)
