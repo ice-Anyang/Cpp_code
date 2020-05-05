@@ -16,6 +16,155 @@ using namespace std;
 
 
 
+/*
+
+server.Post("/dish", [&dish_table](const Request& req, Response& resp) {
+	LOG(INFO) << "新增菜品: " << req.body << std::endl;
+	Json::Reader reader;
+	Json::FastWriter writer;
+	Json::Value req_json;
+	Json::Value resp_json;
+	// 1. 请求解析成 Json 格式
+	bool ret = reader.parse(req.body, req_json);
+	if (!ret) {
+		// 请求解析出错, 返回一个400响应
+		resp_json["ok"] = false;
+		resp_json["reason"] = "parse Request failed!\n";
+		resp.status = 400;
+		resp.set_content(writer.write(resp_json), "application/json");
+		return;
+	}
+	// 2. 进行参数校验
+	if (req_json["name"].empty() || req_json["price"].empty()) {
+		resp_json["ok"] = false;
+		resp_json["reason"] = "Request has no name or price field!\n";
+		resp.status = 400;
+		resp.set_content(writer.write(resp_json), "application/json");
+		return;
+	}
+	比特科技// 3. 调用数据库接口进行操作数据
+		ret = dish_table.Insert(req_json);
+	if (!ret) {
+		resp_json["ok"] = false;
+		resp_json["reason"] = "Insert failed!\n";
+		resp.status = 500;
+		resp.set_content(writer.write(resp_json), "application/json");
+		return;
+	}
+	// 4. 封装正确的返回结果
+	resp_json["ok"] = true;
+	resp.set_content(writer.write(resp_json), "application/json");
+	return;
+}
+/*
+
+MYSQL* mysql = NULL;
+int main() {
+	using namespace httplib;
+	using namespace order_system;
+	Server server;
+	// 1. 数据库客户端初始化和释放
+	mysql = MySQLInit();
+	signal(SIGINT, [](int) { MySQLRelease(mysql); exit(0); });
+	DishTable dish_table(mysql);
+	OrderTable order_table(mysql);
+	// 2. 设置路由
+	// 新增菜品
+	server.Post("/dish", [&dish_table](const Request& req, Response& resp) {
+	});
+	// 查看所有菜品
+	server.Get("/dish", [&dish_table](const Request& req, Response& resp) {
+	});
+	// 删除菜品
+	// raw string(c++ 11), 转义字符不生效. 用来表示正则表达式正好合适
+	// 关于正则表达式, 只介绍最基础概念即可. \d+ 表示匹配一个数字
+	// http://help.locoy.com/Document/Learn_Regex_For_30_Minutes.htm
+	server.Delete(R"(/dish/(\d+))", [&dish_table](const Request& req, Response& resp) {
+	});
+	// 修改菜品
+	server.Put(R"(/dish/(\d+))", [&dish_table](const Request& req, Response& resp) {
+	});
+	比特科技// 新增订单
+		server.Post("/order", [&order_table](const Request& req, Response& resp) {
+	});
+	// 修改订单状态
+	server.Put(R"(/order/(\d+))", [&order_table](const Request& req, Response& resp) {
+	});
+	// 获取订单
+	server.Get("/order", [&order_table, &dish_table](const Request& req, Response& resp) {
+	});
+	// 获取用户客户端, 匹配桌子 id
+	server.Get(R"(/client/table/(\S+))", [](const Request& req, Response& resp) {
+	});
+	// 设置静态文件目录
+	server.set_base_dir("./wwwroot");
+	server.listen("0.0.0.0", 9092);
+	return 0;
+}
+
+
+
+/*
+
+class OrderTable {
+public:
+	OrderTable(MYSQL* mysql) : mysql_(mysql) { }
+	bool SelectAll(Json::Value* orders) {
+		char sql[1024 * 4] = { 0 };
+		sprintf(sql, "select * from order_table");
+		int ret = mysql_query(mysql_, sql);
+		if (ret != 0) {
+			printf("执行 sql 失败! %s\n", mysql_error(mysql_));
+			return false;
+		}
+		MYSQL_RES* result = mysql_store_result(mysql_);
+		if (result == NULL) {
+			printf("获取结果失败! %s\n", mysql_error(mysql_));
+			比特科技return false;
+		}
+		int rows = mysql_num_rows(result);
+		for (int i = 0; i < rows; ++i) {
+			MYSQL_ROW row = mysql_fetch_row(result);
+			Json::Value order;
+			order["order_id"] = atoi(row[0]); // 注意, order_id 是数字, table_id 是字符串
+			order["table_id"] = row[1];
+			order["time"] = row[2];
+			// [重要] 需要在上层把 dish_ids 替换成 dishes(不光是菜品 ID 还有菜品详细信息)
+			order["dish_ids_str"] = row[3];
+			order["state"] = row[4];
+			// 遍历结果依次加入到 dishes 中
+			orders->append(order);
+		}
+		return true;
+	}
+	bool Insert(const Json::Value& order) {
+		char sql[1024 * 4] = { 0 };
+		// 此处 dish_ids 需要先转成字符串(本来是一个对象,
+		// 形如 [1, 2, 3]. 如果不转, 是无法 asCString)
+		sprintf(sql, "insert into order_table values(null, '%s', '%s', '%s', %d)",
+			order["table_id"].asCString(), order["time"].asCString(),
+			order["dish_ids_str"].asCString(), order["state"].asInt());
+		int ret = mysql_query(mysql_, sql);
+		if (ret != 0) {
+			printf("执行 sql 失败! sql=%s, %s\n", sql, mysql_error(mysql_));
+			return false;
+		}
+		return true;
+	}
+	bool ChangeState(const Json::Value& order) {
+		char sql[1024 * 4] = { 0 };
+		sprintf(sql, "update order_table set state = %d where order_id = %d",
+			order["state"].asInt(), order["order_id"].asInt());
+		int ret = mysql_query(mysql_, sql);
+		if (ret != 0) {
+			printf("执行 sql 失败! sql=%s, %s\n", sql, mysql_error(mysql_));
+			return false;
+		}
+		return true;
+	}
+private:
+	MYSQL* mysql_;
+}
 
 /*
 void PrintList(list<int> L)
