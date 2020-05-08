@@ -17,7 +17,163 @@ using namespace std;
 
 
 /*
+int main()
+{
+	int a[] = { 1, 2, 3, 4 };
+	vector<int> v(a, a + sizeof(a) / sizeof(int));
+	vector<int>::iterator it = v.begin();
+	while (it != v.end()) 
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
 
+	v.push_back(5);//尾插
+	v.push_back(6);//尾插
+
+	it = v.begin();
+	while (it != v.end()) 
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+
+	v.pop_back();//尾部删除
+
+	it = v.begin();
+	while (it != v.end()) 
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+
+	// 使用find查找3所在位置的iterator
+	vector<int>::iterator pos = find(v.begin(), v.end(), 3);
+	// 在pos位置之前插入30
+	v.insert(pos, 30);
+
+	it = v.begin();
+	while (it != v.end())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+
+	//找3位置的iostream
+	pos = find(v.begin(), v.end(), 30);
+	// 删除pos位置的数据
+	v.erase(pos);
+
+	it = v.begin();
+	while (it != v.end())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+
+	vector<int> vt{ 5, 6, 7, 8 };
+	
+	v.swap(vt);//交换vt 与 v 两空间的数据
+
+	it = v.begin();
+	while (it != v.end())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+
+	return 0;
+}
+
+/*
+
+//size(),capacity();
+int main()
+{
+	vector<int> vt;
+	cout <<"size= "<< vt.size() << endl;
+	vt.resize(5,2);
+	vt.reserve(10);
+	cout << "capacity = "<<vt.capacity() << endl;
+	cout << "size= " << vt.size() << endl;
+	for (int i = 0; i < 20; ++i)
+	{
+		vt.push_back(i);
+		cout << "vt[" << i << "]=" << vt.capacity() << endl;
+	}
+	cout << "size = " << vt.size() << endl;
+	cout << vt.empty() << endl;//1 - kong 0 - feikong
+	return 0;
+}
+
+
+/*
+
+int main()
+{
+	vector<int> vt{ 1, 2, 3, 4 };//c++11初始化列表
+
+
+	vector<int>::iterator it = vt.begin();//顺序打印
+	while (it != vt.end())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+
+	it = vt.begin();//迭加器的修改
+	while (it != vt.end())
+	{
+		*it *= 2;//扩大二倍
+		++it;
+	}
+
+	vector<int>::reverse_iterator rit = vt.rbegin();//反向打印
+	while (rit != vt.rend())
+	{
+		cout << *rit << " ";
+		rit++;
+	}
+	cout << endl;
+
+	return 0;
+}
+
+
+/*
+//vector 的构造
+int main()
+{
+	vector<int> vt1;
+	vector<int> vt2(10, 2);//10个空间，初始化为2
+	vector<int> vt3(vt2.begin(), vt2.end());//区间构造。
+	vector<int> vt4(vt2);//拷贝构造。
+	for (auto &e : vt2)
+		cout << e <<" " ;
+	cout << endl;
+
+	for (vector<int>::iterator it = vt3.begin(); it != vt3.end(); ++it)
+	{
+		cout << *it << " ";
+	}
+	cout << endl;
+
+	for (auto it = vt4.begin(); it != vt4.end(); ++it)
+		cout << *it << " ";
+	cout << endl;
+
+	return 0;
+}
+
+
+/*
 server.Post("/dish", [&dish_table](const Request& req, Response& resp) {
 	LOG(INFO) << "新增菜品: " << req.body << std::endl;
 	Json::Reader reader;
