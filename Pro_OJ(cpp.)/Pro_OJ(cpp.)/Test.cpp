@@ -14,6 +14,183 @@
 #include<thread>
 using namespace std;
 
+#define DataType int
+
+void PrintArray(int *arr, int left, int right)
+{
+	int i = 0;
+	for (i = left; i <= right; ++i)
+	{
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+}
+
+void BinInsertSort(int *arr, int left, int right)
+{
+	int low, high, mid;
+	int tem, j;
+	for (int i = left + 1; i <= right; i++)
+	{
+		low = left;
+		high = i - 1;
+		tem = arr[i];
+		while (low <= high)
+		{
+			mid = (low + high) / 2;
+			if (tem < arr[mid])
+				high = mid - 1;
+			if (tem >= arr[mid])
+				low = mid + 1;
+		}
+		for (j = i; j > low; --j)//挪出low位置
+		{
+			arr[j] = arr[j - 1];
+		}
+		arr[low] = tem;//tem插入的位置是low
+	}
+}
+void TwoWayInsertSort(int *arr, int left, int right)//两路插入排序
+{
+	int n = right - left + 1;
+	int *tem = (int*)malloc(sizeof(int)*n);
+
+	tem[0] = arr[left];
+	int start, final;
+	start = final = 0;
+	int key = 0;
+	for (int i = left + 1; i <= right; ++i)
+	{
+		key = arr[i];
+		if (key < tem[start])//1.
+		{
+			start = (start - 1 + n) % n;
+			tem[start] = key;
+		}
+		else if (key > tem[final])//2.
+		{
+			final++;
+			tem[final] = key;
+		}
+		else//3.
+		{
+			int end = final;
+			final++;
+			while (key < tem[end])
+			{
+				tem[(end + 1) % n] = tem[end];
+				end = (end - 1 + n) % n;
+			}
+			tem[(end + 1) % n] = key;
+		}
+	}
+	for (int i = 0; i<n; ++i)//将tem 移入arr 中
+	{
+		arr[i] = tem[start];
+		start = (start + 1) % n;
+	}
+	free(tem);
+}
+void ShellSort(int *arr, int left, int right)//希尔排序 
+{
+
+}
+
+
+int main()
+{
+	int arr[] = { 5, 2, 4, 6, 1, 3 };
+	int sz = sizeof(arr) / sizeof(int);
+
+	//InertSort_1(arr,0,sz-1);//直接插入排序
+	//InsertSort_2(arr, 0, sz - 1);//直接插入Swap交换排序
+	//BinInsertSort(arr, 0, sz - 1);
+	TwoWayInsertSort(arr, 0, sz - 1);
+
+	PrintArray(arr, 0, sz - 1);//打印数组
+
+	return 0;
+}
+
+/*
+
+void PrintArray(int *arr, int left, int right)
+{
+	int i = 0;
+	for (i = left; i <= right; ++i)
+	{
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+}
+
+void Swap(DataType* a, DataType* b)//交换函数
+{
+	DataType tem = *a;
+	*a = *b;
+	*b = tem;
+}
+
+void InertSort_1(int* arr, int left, int right)//直接插入排序
+{
+	int i = 0;
+	for (i = left + 1; i <= right; ++i)
+	{
+		int key = arr[i];
+		int end = i - 1;
+		while (end >= left && key < arr[end])
+		{
+			arr[end + 1] = arr[end];
+			end--;
+		}
+		arr[end + 1] = key;
+	}
+}
+
+// 直接插入，调用Swap函数
+void InsertSort_2(int *arr, int left, int right)
+{
+	int i = left + 1;
+	for (i = left + 1; i <= right; ++i)
+	{
+		int end = i - 1;
+		while (end >= left && arr[end + 1] < arr[end])
+		{
+			Swap(&arr[end + 1], &arr[end]);
+			end--;
+		}
+	}
+}
+
+void InsertSort_3(int *arr, int left, int right)
+{
+	for (int i = left + 1; i <= right; ++i)
+	{
+		//哨兵位
+		arr[0] = arr[i];
+		int end = i - 1;
+		while (arr[0] < arr[end]) //
+		{
+			arr[end + 1] = arr[end];
+			end--;
+		}
+		arr[end + 1] = arr[0];
+	}
+}
+
+int main()
+{
+	int arr[] = { 5,2,4,6,1,3 };
+	int sz = sizeof(arr) / sizeof(int);
+
+	//InertSort_1(arr,0,sz-1);//直接插入排序
+	//InsertSort_2(arr, 0, sz - 1);//直接插入Swap交换排序
+	InsertSort_3(arr, 0, sz - 1);//
+
+	PrintArray(arr, 0, sz - 1 );//打印数组
+
+	return 0;
+}
 
 
 /*
