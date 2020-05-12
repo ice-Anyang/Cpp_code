@@ -12,7 +12,310 @@
 #include<vector>
 #include<math.h>
 #include<thread>
+#include<assert.h>
+#include<string.h>
 using namespace std;
+
+
+
+/*
+namespace ice
+{
+	class string
+	{
+		friend ostream& operator<<(ostream &out, const string &s);
+	public:
+		typedef char* iterator;//迭代器
+		
+
+	public:
+		string(const char* str="")//构造函数
+		{
+			_size = strlen(str);
+			_capacity = _size;
+			_str = new char[_capacity + 1];
+			strcpy(_str, str);
+		}
+		string(const string& s)//拷贝构造函数;
+			:_str(nullptr),
+			_size(0),
+			_capacity(0)
+		{
+			string tem(s);
+			this->Swap(tem);
+		}
+
+		string operator=(string s)//赋值语句
+		{
+			this->Swap(s);
+			return *this;
+		}
+		
+		~string()
+		{
+			if (_str)
+			{
+				delete[]_str;
+				_str = nullptr;
+			}
+		}
+		
+		///////////////////////////////////////////
+		iterator begin()
+		{
+			return _str;
+		}
+
+		iterator end()
+		{
+			return _str + _size;
+		}
+
+		char operator[](size_t i)
+		{
+			assert(i<_size);
+			return _str[i];
+		}
+
+		const char operator[](size_t i)const
+		{
+			assert(i < _size);
+			return _str[i];
+		}
+
+		void push_back(char c)
+		{
+			if (_size == _capacity)
+				Reserve(_capacity * 2);
+			_str[_size++] = c;
+			_str[_size] = '\0';
+		}
+
+		size_t size()
+		{
+			return _size;
+		}
+
+		size_t capacity()
+		{
+			return _capacity;
+		}
+
+		void Swap(string& s)//交换函数
+		{
+			swap(_str, s._str);
+			swap(_size, s._size);
+			swap(_capacity, s._capacity);
+		}
+		void Resize(size_t newSize, char c = '\0')
+		{
+			if (newSize > _size)
+			{
+				// 如果newSize大于底层空间大小，则需要重新开辟空间
+				if (newSize > _capacity)
+				{
+					Reserve(newSize);//扩容
+				}
+				memset(_str + _size, c, newSize - _size);
+			}
+			_size = newSize;
+			_str[newSize] = '\0';
+		}
+		void Reserve(size_t newCapacity)//扩容
+		{
+			// 如果新容量大于旧容量，则开辟空间
+			if(newCapacity > _capacity)
+			{
+				char* str = new char[newCapacity + 1];
+				strcpy(str, _str);//把旧空间的内容拷贝到str;
+				// 释放原来旧空间,然后使用新空间
+				delete[] _str;
+				_str = str;
+				_capacity = newCapacity;
+			}
+		}
+
+		string& operator+=(char c)
+			{
+			push_back(c);
+			return *this;
+		}
+		
+		const char* c_str()const//  c_str  方法;
+		{
+			return _str;
+		}
+	private:
+		char* _str;
+		size_t _capacity;
+		size_t _size;
+	};
+}
+ostream& ice::operator<<(ostream &out, const string &s)
+{
+	out << s._str;
+	return out;
+}
+
+int main()
+{
+	ice::string s("hello world");
+
+	for (size_t i = 0; i < s.size(); ++i)
+		cout << s[i];
+	cout << endl;
+	return 0;
+}
+
+
+
+/*
+//反转字符串
+class Solution {
+public:
+	string reverseString(string& s) {
+		if (s.empty())
+			return s;
+		size_t start = 0;
+		size_t end = s.size() - 1;
+		while (start < end)
+		{
+			swap(s[start], s[end]);
+			++start;
+			--end;
+		}
+		return s;
+	}
+private:
+
+};
+
+int main()
+{
+	string str1("hello world");
+	Solution So;
+	So.reverseString(str1);
+	cout << str1 << endl;
+}
+
+/*
+
+int main()
+{
+	string str1("hello world!");
+	string str2("like ");
+
+	//str1.append("aaa");// 在str1 后追加字符串
+	str1.append(str2); // 在str1 后追加 str2
+	cout << str1 << endl;
+
+	str1.push_back('c');//追加字符
+	cout << str1 << endl;
+
+	str2 += str1;//追加字符串str1
+	str2 += 'a';//追加字符
+	cout << str2 << endl;
+
+	cout << str2.c_str() << endl;//c方式打印
+
+	// 获取file的后缀
+	string file1("string.cpp");
+	size_t pos = file1.rfind('.');//找到pos位置
+	string suffix(file1.substr(pos, file1.size() - pos));//截取pos后的字符 .cpp
+	cout << suffix << endl;
+
+	// npos是string里面的一个静态成员变量
+	// static const size_t npos = -1;
+	// 取出url中的域名
+
+	string url("http://www.cplusplus.com/reference/string/");
+	cout << url << endl;
+	size_t start = url.find("://");//找到“：//”的位置
+	if (start == string::npos)
+	{
+		cout << "invalid url" << endl;
+	}
+
+	start += 3;//跳过://
+	size_t finish = url.find('/', start);//找到从start开始的“:/”.
+	string address = url.substr(start, finish - start);//从start开始找域名
+
+	cout << address << endl;
+	return 0;
+}
+
+
+
+
+/*
+int main()
+{
+	string str1("I love you!");
+
+	//1.operator[]
+	for (int i = 0; i < str1.size(); ++i)
+		cout << str1[i];
+	cout << endl;
+
+	//2.迭代器。
+	//auto 关键字
+	auto it = str1.begin();
+	while (it != str1.end())
+	{
+		cout << *it;
+		it++;
+	}
+	cout << endl;
+	
+	//3.c++11 for 访问
+	for (auto &e : str1)
+		cout << e;
+	cout << endl;
+	return 0;
+}
+
+/*
+
+int main()
+{
+	string str1{ "hello world" };//C++11 初始化列表。
+
+	cout << str1.size() << endl;// 11
+	cout << str1.empty() << endl;// 0 
+
+	cout << str1.capacity() << endl;// 15
+	str1.reserve(24);
+	cout << str1.capacity() << endl; // 31
+
+	str1.resize(40);
+
+	cout << str1.size() << endl; // 40 
+	cout << str1.capacity() << endl; // 47
+	cout << str1 << endl; // ...
+
+	str1.clear();
+	cout << str1 << endl;
+	cout << str1.capacity() << endl; // 47
+	cout << str1.size() << endl; // 0
+	return 0;
+}
+
+/*
+
+int main()
+{
+	string str1;
+	string str2("hello world!");
+	string str3(5, 'a');
+	string str4(str2);
+	cout << str2 << endl;
+	cout << str3 << endl;
+	cout << str4 << endl;
+	return 0;
+}
+
+
+/*
 
 #define DataType int
 
@@ -93,8 +396,114 @@ void TwoWayInsertSort(int *arr, int left, int right)//两路插入排序
 }
 void ShellSort(int *arr, int left, int right)//希尔排序 
 {
-
+	int gap = right - left + 1;//总长度
+	while (gap > 1)//增量必须大于1
+	{
+		gap = gap / 3 + 1;//gap增量的确定。
+		for (int i = left; i <= right - gap; ++i)
+		{
+			int end = i;
+			int tem = arr[end + gap];
+			while (end >= left && tem<arr[end])
+			{
+				arr[end + gap] = arr[end];//
+				end -= gap;
+			}
+			arr[end + gap] = tem;
+		}
+	}
 }
+
+void Swap(DataType* a, DataType* b)//交换函数
+{
+	DataType tem = *a;
+	*a = *b;
+	*b = tem;
+}
+
+//直接选择排序
+static int GetMinIndex(int *arr, int left, int right)
+{
+	int index = left;
+	int min = arr[left];
+	for (int i = left + 1; i <= right; ++i)
+	{
+		if (min > arr[i])
+		{
+			min = arr[i];
+			index = i;
+		}
+	}
+	return index;
+}
+
+void SelectSort(int *arr, int left, int right)
+{
+	int i = 0;
+	for (i = left; i < right; i++)
+	{
+		int index = GetMinIndex(arr, i, right);//获取最小值的下标
+		if (index != i)
+		{
+			Swap(&arr[index], &arr[i]);//交换两位置上的值
+		}
+	}
+}
+
+//堆排序
+static void AdjustDown(int *arr, int n, int start)//形成小堆
+{
+	int i = start;//中间
+	int j = 2 * i + 1;//最后值
+	while (j < n)
+	{
+		if (j + 1 < n && arr[j] <arr[j + 1])
+			j++;
+		if (arr[i] < arr[j])
+		{
+			Swap(&arr[i], &arr[j]);
+			i = j;
+			j = 2 * i + 1;
+		}
+		else
+			break;
+	}
+}
+
+void HeapSort(int *arr, int left, int right)
+{
+	int n = right - left + 1;//总长度
+	int cur = (n - 1) / 2;//取中间值
+	while (cur > left)
+	{
+		AdjustDown(arr, n, cur);
+		cur--;
+	}
+	int end = right;
+	while (end >= left)
+	{
+		Swap(&arr[left], &arr[end]);
+		AdjustDown(arr, end - left, 0);
+		end--;
+	}
+}
+
+void BubbleSort(int *arr, int left, int right)//冒泡排序
+{
+	for (int i = left; i < right; ++i)
+	{
+		bool inser = false;
+		for (int j = left; j < right - i; ++j)
+		{
+			if (arr[j]>arr[j + 1])
+				Swap(&arr[j], &arr[j + 1]);
+			inser = true;
+		}
+		if (!inser)//没进第二个for则退出
+			break;
+	}
+}
+
 
 
 int main()
@@ -105,7 +514,10 @@ int main()
 	//InertSort_1(arr,0,sz-1);//直接插入排序
 	//InsertSort_2(arr, 0, sz - 1);//直接插入Swap交换排序
 	//BinInsertSort(arr, 0, sz - 1);
-	TwoWayInsertSort(arr, 0, sz - 1);
+	//TwoWayInsertSort(arr, 0, sz - 1);//二路归并排序
+	//SelectSort(arr, 0, sz - 1);//选择排序
+	//HeapSort(arr, 0, sz - 1);//堆排序
+	//BubbleSort(arr, 0, sz - 1);//冒泡排序
 
 	PrintArray(arr, 0, sz - 1);//打印数组
 
