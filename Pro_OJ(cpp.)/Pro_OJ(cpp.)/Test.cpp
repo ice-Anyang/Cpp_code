@@ -17,6 +17,27 @@
 using namespace std;
 
 
+int main()
+{
+	char *ptr = "hello world";
+	cout << sizeof(ptr) << endl;//4  //指针大小都为4个字节
+	cout << strlen(ptr) << endl;//11 
+
+	char arr[] = "hello world";
+	cout << sizeof(arr) << endl;//12 存在‘\0’;
+	cout << strlen(arr) << endl;//11
+
+	char arr1[] = {'a','s','d','f','g' };
+
+	cout << sizeof(arr1)/sizeof(char) << endl;//5
+	cout << strlen(arr1) << endl;//27 出现错误，没有‘\0’;
+
+	char arr2[] = { 'a', 's', 'd', 'f', 'g' ,'\0'};
+	cout << strlen(arr2) << endl;
+
+	return 0;
+}
+
 
 /*
 namespace ice
