@@ -10,12 +10,477 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<deque>
 #include<math.h>
 #include<thread>
 #include<assert.h>
-#include<string.h>
+//#include<string.h>
+//using namespace std;
+
+
+
+/*
+#include<iostream>
 using namespace std;
 
+class Scopedptr
+{
+public:
+	Scopedptr(int n) :pt(n)
+	{
+
+	}
+	int operator*(Scopedptr s)
+	{
+		return s.pt;
+	}
+	~Scopedptr()
+	{
+		delete[];
+	}
+private:
+	int pt;
+};
+void* operator new (size_t n)
+{
+	int* ptr = (int*)malloc(sizeof(int)*n);
+	if (ptr != nullptr)
+		return ptr;
+}
+void test(int n)
+{
+	Scopedptr ptr(new int(n));
+	*ptr *= 2;
+
+	std::cout << *ptr << std::endl;
+}
+
+int main()
+{
+	int n = 0;
+	std::cin >> n;
+
+	test(n);
+	return 0;
+}
+
+/*
+#include<iostream>
+#include<string>
+//using namespace std;
+
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+	int num = 0;
+	int count[256] = { 0 };
+	vector<int> vt;
+	while (cin >> num)
+		vt.push_back(num);
+	for (int i = 0; i<vt.size(); ++i)
+	{
+		if (count[vt[i]] == 0)
+		{
+			count[vt[i]]++;
+		}
+		continue;
+	}
+	for (int i = 0; i < 256; ++i)
+	{
+		if (count[i] == 1)
+			cout << i << " ";
+	}
+	cout << endl;
+	return 0;
+}
+
+/*
+#include<iostream>
+
+class Scopedptr
+{
+public:
+	Scopedptr()
+	{
+
+	}
+	void operator new(size_t n)
+	{
+
+	}
+	int operator*(Scopedptr s)
+	{
+		return s.pt;
+	}
+	~Scopedptr()
+	{
+
+	}
+private:
+	int pt;
+};
+void test(int n)
+{
+	Scopedptr ptr(new int(n));
+	*ptr *= 2;
+
+	std::cout << *ptr << std::endl;
+}
+
+int main()
+{
+	int n = 0;
+	std::cin >> n;
+
+	test(n);
+	return 0;
+}
+
+/*
+class A
+{
+public:
+	A()
+	{}
+	A(std::string str):_s(&str)
+	{}
+	std::string s()const{
+		return *_s;
+	}
+	A operator&(const A& s) = delete;
+	A operator=(const A& s)
+	{
+		_s = s._s;
+		return *this;
+	}
+	A move(const A& s)
+	{
+		_s = s._s;
+		return *this;
+	}
+	~A()
+	{
+		_s = nullptr;
+	}
+
+private:
+	std::string* _s;
+
+};
+
+int main()
+{
+	std::string input;
+	std::cin >> input;
+	A a(input);
+	A b(std::move(a));
+	std::cout << b.s() << std::endl;
+	A c;
+	c = std::move(b);
+	std::cout << c.s() << std::endl;
+	return 0;
+}
+
+/*
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+	int num = 0;
+	int count[256] = { 0 };
+	vector<int> vt;
+	while (cin >> num)
+		vt.push_back(num);
+	for (int i = 0; i<vt.size(); ++i)
+	{
+		if (count[vt[i]] != 0)
+			continue;
+		count[vt[i]]++;
+	}
+	for (int i = 0; i < 256; ++i)
+	{
+		if (count[i] == 1)
+			cout << i << " ";
+	}
+	cout << endl;
+	return 0;
+}
+
+
+/*
+int main()
+{
+	deque<int> de{ 1, 2, 3 };
+	deque<int> de2{ 4, 5, 6, 7 };
+
+	de.push_back(4);
+	de.push_back(5);
+	de.push_front(0);
+	de.push_front(0);
+	
+	de.pop_back();
+	de.pop_front();
+
+	for (auto& e : de)
+		cout << e << " ";
+	cout << endl;
+
+	de.swap(de2);
+
+	for (auto& e : de)
+		cout << e << " ";
+	cout << endl;
+
+	de2.clear();
+
+
+	return 0;
+}
+
+
+/*
+int main()
+{
+	deque<int> de;
+	de.push_back(1);
+	de.push_back(2);
+	de.push_back(3);
+	de.push_back(4);
+	de.push_back(5);
+
+	for (auto& e : de)
+		cout << e << " ";
+	cout << endl;
+
+	cout << de[2] << endl;
+
+	cout << de.front() << endl;
+	cout << de.back() << endl;
+
+	return 0;
+}
+
+
+/*
+int main()
+{
+
+	deque<int> de={ 1, 2, 3, 4, 5 }; // C++ 11 初始化列表
+
+	cout << de.size() << endl; //5 
+	cout << de.empty() << endl; //0  不空
+
+	de.resize(20, 2);
+	deque<int>::iterator it = de.begin();
+
+	while (it != de.end())
+	{
+		cout << *it << " ";
+		it++;
+	}
+	cout << endl;
+
+	
+}
+
+/*
+
+int main()
+{
+	deque<int> d1;
+	deque<int> d2(10, 2);
+	deque<int> d3(d2);
+	deque<int> d4(d2.begin(), d2.end());
+
+	for (auto& e : d2)
+		cout << e << " ";
+	cout << endl;
+
+	for (auto& e : d3)
+		cout << e << " ";
+	cout << endl;
+
+	for (auto& e : d4)
+		cout << e << " ";
+	cout << endl;
+
+	return 0;
+}
+
+
+
+/*
+
+int strcmp(const char* dest,const char* src)
+{
+	assert(dest);
+	assert(src);
+
+	while ((*dest != '\0') && (*src == *dest))
+	{
+		dest++;
+		src++;
+	}
+	
+	return  *dest - *src;
+
+}
+
+
+int main()
+{
+	char *str1 = "hello world";
+	char *str2 = "hello xian";
+	int res = strcmp(str1, str2);
+	if (res > 0)
+		printf("str1>str2");
+	else if (res == 0)
+		printf("str1=str2");
+	else
+		printf("str1<str2");
+	return 0;
+}
+
+
+/*
+char *my_strcat(char *dest, const char *src)
+{
+	assert(dest != NULL);
+	assert(src != NULL);
+	char *ret = dest;
+	while (*dest!='\0')                 //寻找到目标字符串的'\0'位置
+	{
+		dest++;
+	}
+	while (*dest++ = *src++);       //拷贝过程与strcpy相同
+	return ret;
+}
+
+int main()
+{
+	char* ptr = "hello world!";
+	char arr[100] = "asd";
+
+	my_strcat(arr, ptr);
+	printf("arr: %s", arr);
+	return 0;
+}
+
+/*
+void my_strcat(char *dest, const char *src, int len)
+{
+	char *ret = dest + len;
+	assert(src);
+	//printf("%s\n",(dest+1));
+	while (*ret++ = *src++)
+		;
+}
+int main()
+{
+	char arr1[20] = "hello world";
+	char arr2[] = "efgh";
+	int len = strlen(arr1);
+	my_strcat(arr1, arr2, len);
+	printf("%s\n", arr1);
+	system("pause");
+	return 0;
+}
+/*
+char* my_strcat(char *dest, const char* src)
+{
+
+	while (*dest != '\0')
+		dest++;
+	*(dest++) = *(src++);
+
+}
+
+int main()
+{
+	char* ptr = "hello world!";
+	char arr[100] = "asd";
+
+	my_strcat(arr, ptr);
+	printf("arr: %s", arr);
+	return 0;
+}
+
+
+/*
+int main()
+{
+	char str[80];
+	strcpy(str, "these ");
+	strcat(str, "strings ");
+	strcat(str, "are ");
+	strcat(str, "concatenated.");
+	printf("%s", str);
+	return 0;
+}
+
+
+
+/*
+char* my_strcpy(char *dest, const char*src)
+{
+	char *ret = dest;
+	assert(dest != NULL);
+	assert(src != NULL);
+	while ((*dest++ = *src++))
+		;
+	return ret;
+}
+
+
+int main()
+{
+	char* ptr = "hello world!";
+	char arr[100] = "";
+
+	my_strcpy(arr,ptr);
+	printf("arr: %s", arr);
+	return 0;
+}
+
+
+/*
+//size_t my_strlen(char* str)//递归实现
+//{
+//	while (*(str) != '\0')
+//	{
+//		return 1 + my_strlen(str + 1);
+//	}
+//	return 0;
+//}
+//
+//size_t my_strlen(char* str)//指针-指针
+//{
+//	char* pt = str;
+//	while (*(pt) != '\0')
+//		pt++;
+//	return pt-str;
+//}
+
+size_t my_strlen(char* str)//临时变量
+{
+	size_t count = 0;
+	while (*(str) != '\0')
+		count++;
+	return count;
+}
+
+int main()
+{
+	char* ptr = "hello world";
+	size_t len = my_strlen(ptr);
+	printf("len = %d", len);
+	return 0;
+}
+
+/*
 
 int main()
 {
