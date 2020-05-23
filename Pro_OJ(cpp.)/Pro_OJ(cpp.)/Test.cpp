@@ -3,7 +3,7 @@
 #include<list>
 #include<vector>
 #include<queue>
-#include<stack>
+//#include<stack>
 #include<string>
 #include<stdio.h>
 #include<algorithm>
@@ -11,11 +11,173 @@
 #include<string>
 #include<vector>
 #include<deque>
+#include<functional>
 #include<math.h>
 #include<thread>
 #include<assert.h>
-//#include<string.h>
-//using namespace std;
+#include<string.h>
+using namespace std;
+
+
+// 
+int main()
+{
+	vector<int> vt{ 1, 3, 2, 4, 2, 5, 3, 4 };
+	sort(vt.begin(), vt.end());
+
+	vt.erase(unique(vt.begin(), vt.end()),vt.end());
+
+	for (auto&e : vt)
+	{
+		cout << e << " ";
+	}
+
+	cout << endl;
+
+	return 0;
+}
+
+
+/* 
+int main()
+{
+	vector<int> vt{ 1,4,6,3,0,2,5 };
+
+	priority_queue<int> p1;
+
+	for (auto& e : vt)
+	{
+		p1.push(e);
+	}
+	cout << p1.top() << endl;
+
+	//调整为小堆将第三个参数换一下 greater 方法
+	priority_queue<int, vector<int>, greater<int>> q2(vt.begin(), vt.end());
+	cout << q2.top() << endl;
+
+	return 0;
+}
+
+
+
+
+
+/*
+namespace Ice
+{
+	template<typename T,class Con = deque<T>>
+	class Queue
+	{
+	public:
+		Queue()
+		{}
+		void Push(const T& x)
+		{
+			_qu.push_back(x);
+		}
+		void Pop()
+		{
+			_qu.pop_front();
+		}
+
+		T& Front()
+		{
+			return _qu.front();
+		}
+		T& Back()
+		{
+			return _qu.back();
+		}
+
+		size_t Size()
+		{
+			return _qu.size();
+		}
+
+		bool Empty()
+		{
+			return _qu.empty();
+		}
+
+	private:
+		Con _qu;
+	};
+}
+int main()
+{
+	Ice::Queue<int> qu;
+
+	qu.Push(1);
+	qu.Push(2);
+	qu.Push(3);
+	qu.Pop();
+
+	cout << qu.Front() << endl;//2
+	cout << qu.Back() << endl;//3
+	cout << qu.Size() << endl;//2
+	cout << qu.Empty() << endl;//0
+
+	return 0;
+
+}
+
+
+/*
+
+namespace Ice
+{
+	template<typename T, class Con = deque<T>>
+	class Stack
+	{
+	public:
+		Stack()
+		{
+		}
+		void Push(const T& x)
+		{
+			_st.push_back(x);
+		}
+		void Pop()
+		{
+			_st.pop_back();
+		}
+
+		T& Top()
+		{
+			return _st.back();
+		}
+
+		size_t Size()
+		{
+			return _st.size();
+		}
+
+		bool Empty()
+		{
+			return _st.empty();
+		}
+	private:
+		Con _st;
+	};
+}
+
+int main()
+{
+	Ice::Stack<int> st;
+
+	st.Push(1);
+	st.Push(2);
+	st.Push(3);
+
+	st.Pop();
+
+	cout << st.Top() << endl;
+
+	cout << st.Size() << endl;
+	cout << st.Empty() << endl;
+
+	return 0;
+}
 
 
 
