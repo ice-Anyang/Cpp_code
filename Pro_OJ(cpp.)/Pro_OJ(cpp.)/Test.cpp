@@ -19,6 +19,67 @@
 using namespace std;
 
 
+
+/* 
+namespace Ice
+{
+	template<class T, class Con = vector<T>, class Compare = less<T>>
+	class priority_queue
+	{
+	public:
+		priority_queue() :_c()
+		{}
+
+		template <class InputIterator>
+		priority_queue(InputIterator first, InputIterator last)
+			: _c(first, last)
+		{
+			make_heap(_c.begin(), _c.end(), Com);
+		}
+		bool empty()  
+		{
+			return _c.empty();
+		}
+		size_t size()
+		{
+			return _c.size();
+		}
+		T& top()
+		{
+			return _c.front();
+		}
+		void push(const T& x)
+		{
+			_c.push_back(x);
+			push_heap(_c.begin(), _c.end(), Com);
+		}
+		void pop()
+		{
+			pop_heap(_c.begin(), _c.end(), Com);
+			c.pop_back();
+		}
+
+	private:
+		Con _c;
+		Compare Com;
+	};
+}
+
+
+int main()
+{
+	vector<int> vt{ 3, 2, 5, 4, 6, 7 };
+	Ice::priority_queue<int> q1;
+	for (int i = 0; i < vt.size();++i)
+		q1.push(vt[i]);
+
+	cout << q1.top() << endl;  // 7
+
+	return 0;
+}
+
+
+/*
 // 
 int main()
 {
