@@ -19,6 +19,72 @@
 using namespace std;
 
 
+//C++ ผฬณะ
+class person
+{
+public:
+	void print()
+	{
+		cout << _age << endl;
+	}
+private:
+	int _age = 18;
+};
+
+class student : public person
+{
+
+//protected:
+public:
+
+	void fun()
+	{
+		cout << "student::fun()" << endl;
+	}
+
+protected:
+	char *name = "zhangsan";
+
+};
+
+int main()
+{
+	person pr;
+	student stu;
+	stu.print();
+	stu.fun();
+	return 0;
+
+}
+
+/*
+class person
+{
+public:
+	void print()
+	{
+		cout << _age << endl;
+	}
+private:
+	int _age = 18;
+};
+
+class student : public person
+{
+
+protected:
+	char *name= "zhangsan";
+
+};
+
+int main()
+{
+	person pr;
+	student stu;
+	stu.print();
+	return 0;
+
+}
 
 /* 
 namespace Ice
