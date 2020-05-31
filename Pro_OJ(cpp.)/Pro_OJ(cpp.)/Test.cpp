@@ -20,6 +20,450 @@ using namespace std;
 
 
 //C++ 继承
+class A
+{
+public:
+	int _a = 10;
+};
+class B : virtual public A
+{
+protected:
+	int _b = 20;
+};
+class C : virtual public A
+{
+protected:
+	int _c = 30;
+};
+class D : public B, public C
+{
+protected:
+	int _d = 40;
+};
+
+int main()
+{
+	D d;
+	d._a = 50;
+	cout << d._a << endl;
+	A a;
+	cout << a._a << endl;
+
+	return 0;
+}
+
+
+/*
+class A
+{
+public:
+	int _a = 10;
+};
+class B : public A
+{
+protected:
+	int _b = 20;
+};
+class C : public A
+{
+protected:
+	int _c = 30;
+};
+class D : public B, public C
+{
+protected:
+	int _d = 40;
+};
+int main()
+{
+	D d;
+	//d._a = 50;
+	//存在二义性，_a无法确定是class B 中的 还是class C 中的。
+	return 0;
+}
+
+/*
+class A
+{
+};
+class B
+{
+};
+class C : public A, public B
+{
+};
+
+/*
+class Person
+{
+public:
+	Person() { ++_count; }
+protected:
+	string _name; // 姓名
+public:
+	static int _count; // 统计人的个数。
+};
+int Person::_count = 0;
+
+class Student : public Person
+{
+protected:
+	int _stuNum; // 学号
+};
+
+class Graduate : public Student
+{
+protected:
+	string _seminarCourse; // 研究科目
+};
+void TestPerson()
+{
+	Student s1;
+	Student s2;
+	Student s3;
+	Graduate s4;
+	cout << " 人数 :" << Person::_count << endl;
+	Student::_count = 0;
+	cout << " 人数 :" << Person::_count << endl;
+}
+
+int main()
+{
+	TestPerson();
+	return 0;
+}
+
+
+/*
+class Student;
+class Person
+{
+public:
+	friend void Display(const Person& p, const Student& s);
+protected:
+	string _name; // 姓名
+};
+class Student : public Person
+{
+protected:
+	int _stuNum; // 学号
+};
+void Display(const Person& p, const Student& s)
+{
+	cout << p._name << endl;
+	//cout << s._stuNum << endl;
+}
+void main()
+{
+	Person p;
+	Student s;
+	Display(p, s);
+}
+
+/*
+class Base
+{
+public:
+	Base()
+	{
+		cout << "this is Base::Base()" << endl;
+	}
+	Base(const Base& b) :_m(b._m)
+	{
+		cout << "this is Base::Base(const Base& b)" << endl;
+	}
+	Base& operator=(const Base& b)
+	{
+		cout << "this is Base::Base& operator=(const Base& b)" << endl;
+		if (this != &b)
+			_m = b._m;
+		return *this;
+	}
+	~Base()
+	{
+		cout << "this is Base::~Base()" << endl;
+	}
+private:
+	int _m = 10;
+};
+
+class C : public Base
+{
+public:
+	C()
+	{
+		cout << "this is C::C()" << endl;
+	}
+	C(const C& c) :_c(c._c)
+	{
+		cout << "this is C::C(const C& c)" << endl;
+	}
+	C& operator=(const C& c)
+	{
+		cout << "this is C::C& operator=(const C& c)" << endl;
+		if (this != &c)
+			_c = c._c;
+		return *this;
+	}
+	~C()
+	{
+		cout << "this is C::~C()" << endl;
+	}
+private:
+	int _c = 5;
+};
+
+
+int main()
+{
+	C c;
+	C b = c;
+	C d(b);
+	return 0;
+}
+
+
+/*
+class Person
+{
+public:
+	Person(const char* name = "peter")
+		: _name(name)
+	{
+		cout << "Person()" << endl;
+	}
+	Person(const Person& p)
+		: _name(p._name)
+	{
+		cout << "Person(const Person& p)" << endl;
+	}
+	Person& operator=(const Person& p)
+	{
+		cout << "Person operator=(const Person& p)" << endl;
+		if (this != &p)
+			_name = p._name;
+		return *this;
+	}
+	~Person()
+	{
+		cout << "~Person()" << endl;
+	}
+protected:
+	string _name; // 姓名
+};
+class Student : public Person
+{
+public:
+	Student(const char* name, int num)
+		: Person(name)
+		, _num(num)
+	{
+		cout << "Student()" << endl;
+	}
+	Student(const Student& s)
+		: Person(s)
+		, _num(s._num)
+	{
+		cout << "Student(const Student& s)" << endl;
+	}
+	Student& operator = (const Student& s)
+	{
+		cout << "Student& operator= (const Student& s)" << endl;
+		if (this != &s)
+		{
+			Person::operator =(s);
+			_num = s._num;
+		}
+		return *this;
+	}
+	~Student()
+	{
+		cout << "~Student()" << endl;
+	}
+protected:
+	int _num; //学号
+};
+void Test()
+{
+	Student s1("jack", 18);
+	Student s2(s1);
+	Student s3("rose", 17);
+	s1 = s3;
+}
+int main()
+{
+	Test();
+	return 0;
+}
+
+
+
+/*
+
+class Base
+{
+public:
+	Base()
+	{
+		cout << "this is Base::Base()" << endl;
+	}
+	Base(const Base& b) :_m(b._m)
+	{
+		cout << "this is Base::Base(const Base& b)" << endl;
+	}
+	Base& operator=(const Base& b)
+	{
+		cout << "this is Base::Base& operator=(const Base& b)" << endl;
+		if (this != &b)
+			_m = b._m;
+		return *this;
+	}
+	~Base()
+	{
+		cout << "this is Base::~Base()" << endl;
+	}
+private:
+	int _m = 10;
+};
+
+class C : public Base
+{
+public:
+	C()
+	{
+		cout << "this is C::C()" << endl;
+	}
+	C(const C& c) :_c(c._c)
+	{
+		cout << "this is C::C(const C& c)" << endl;
+	}
+	C& operator=(const C& c)
+	{
+		cout << "this is C::C& operator=(const C& c)" << endl;
+		if (this != &c)
+			_c = c._c;
+		return *this;
+	}
+	~C()
+	{
+		cout << "this is C::~C()" << endl;
+	}
+private:
+	int _c = 5;
+};
+
+
+int main()
+{
+	C c;
+	C b(c);
+	C d = b;
+	return 0;
+}
+
+/*
+
+
+class Base
+{
+public:
+	void fun()
+	{
+		cout << "This is Base::fun()" << endl;
+	}
+	int prin(int a)
+	{
+		cout << "This is Base::prin()" << endl;
+		return 0;
+	}
+private:
+	int _m = 5;
+};
+
+class B : public Base
+{
+public:
+	void fun()
+	{
+		cout << "This is B::fun()" << endl;
+	}
+	void prin()
+	{
+		cout << "This is B::prin()" << endl;
+	}
+private:
+	int _b = 10;
+};
+
+int main()
+{
+	B *pb = new B;
+	//调用的子类的fun()方法。
+	pb->fun();
+	//加上域名，调用父类的fun()方法。
+	pb->Base::fun();
+
+	//调用的子类的prin()方法。
+	pb->prin();
+	//加上域名，调用父类的prin()方法。
+	pb->Base::prin(1);
+
+	return 0;
+}
+
+
+
+/*
+//赋值兼容规则
+
+class Base
+{
+public:
+	void fun()
+	{
+		cout << "This is Base::fun()" << endl;
+	}
+private:
+	int _m = 5;
+};
+
+class A : public Base
+{
+public:
+	void fun()
+	{
+		cout << "This is A::fun()" << endl;
+	}
+	void prin()
+	{
+		cout << "This is A::prin()" << endl;
+	}
+private:
+	int _a = 10;
+};
+
+
+int main()
+{
+	//1.子类的对象给父类的对象赋值
+	A ma;
+	Base mb = ma;
+	//2.父类的指针可以指向子类对象的地址
+	Base* mp = &ma;
+	//3.子类的对象可以给父类的引用赋值
+	Base& mbb = ma;
+
+	//都调用的父类的成员方法
+	mb.fun();
+	mp->fun();
+	mbb.fun();
+
+	return 0;
+}
+
+
+
+/*
 class person
 {
 public:
