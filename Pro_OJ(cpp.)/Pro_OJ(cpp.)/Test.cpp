@@ -19,7 +19,128 @@
 using namespace std;
 
 
+/*
+class people
+{
+public:
+	virtual void fun()
+	{
+		printf("this is people::fun()\n");
+	}
+
+	virtual void print()
+	{
+		cout << "this is people::print()" << endl;
+	}
+
+private:
+	int _val;
+};
+
+class student : public people
+{
+	void fun()
+	{
+		cout << "this is student::fun()" << endl;
+	}
+	void print()
+	{
+		cout << "this is student::print()" << endl;
+	}
+private:
+	int _sval;
+};
+
+void Func(people& pe)
+{
+	pe.fun();
+	pe.print();
+}
+
+int main()
+{
+	people pu;
+	Func(pu);
+
+	student stu;
+	Func(stu);
+
+	return 0;
+}
+
+
+
+
+/*
+
+int main()
+{
+	int a = 0, b = 1;
+	int c = a + b;
+	cout << c << endl;
+	return 0;
+}
+
+/*
+
+class people
+{
+public:
+	virtual void fun()
+	{
+		printf("this is people::fun()\n");
+	}
+
+	virtual void print()
+	{
+		cout << "this is people::print()" << endl;
+	}
+
+private:
+	int _val;
+};
+
+class student
+{
+	void fun()
+	{
+		cout << "this is student::fun()" << endl;
+	}
+	void print()
+	{
+		cout << "this is student::print()" << endl;
+	}
+private:
+	int _sval;
+};
+
+void Func(people& pe)
+{
+	pe.fun();
+	pe.print();
+}
+
+int main()
+{
+	people stu;
+	Func(stu);
+
+	return 0;
+}
+
+
+/*
 //C++ ผฬณะ
+int main()
+{
+	int a = 337, b = 1, c = 2;
+	int m = a + b*c;
+	cout << m << endl;
+	return 0;
+}
+
+
+/*
 class A
 {
 public:
