@@ -20,6 +20,16 @@ using namespace std;
 
 
 //C++ ผฬณะ
+int main()
+{
+	int a = 337, b = 1, c = 2;
+	int m = a + b*c;
+	cout << m << endl;
+	return 0;
+}
+
+
+/*
 class A
 {
 public:
