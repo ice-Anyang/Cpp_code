@@ -20,6 +20,218 @@ using namespace std;
 
 
 /*
+
+class Base
+{
+public:
+	void fun()
+	{
+		cout << "Base::fun()" << endl;
+	}
+
+private:
+	int _b = 1;
+};
+
+class A : public Base
+{
+public:
+	void fun(int a)
+	{
+		cout << "A:fun()" << endl;
+	}
+private:
+	int _a = 2;
+};
+
+int main()
+{
+	A a;
+	a.fun(1);
+	a.Base::fun();
+	return 0;
+}
+
+
+
+/*
+class Base
+{
+public:
+	int fun(int a, int b)
+	{
+		return a + b;
+	}
+	double fun(int a, double b)
+	{
+		return a + b;
+	}
+};
+
+int main()
+{
+	Base ba;
+	int a = ba.fun(3, 4);
+	cout << a << endl;
+	double b = ba.fun(3, 4.0);
+	cout << b << endl;
+
+	return 0;
+}
+
+
+
+/*
+class Person
+{
+public:
+	virtual void BuyTicket()
+	{
+		cout << "买票-全价" << endl;
+	}
+	virtual void fun()
+	{
+		cout << "Person::fun()" << endl;
+	}
+};
+class Student : public Person
+{
+public:
+	virtual void BuyTicket()
+	{
+		cout << "买票-半价" << endl;
+	}
+	
+	void print()
+	{
+		cout << "Student::print()" << endl;
+	}
+private:
+	int _b;
+};
+void Func(Person& p)
+{
+	p.BuyTicket();
+}
+int main()
+{
+	Person Mike;
+	Func(Mike);
+	Student Johnson;
+	Func(Johnson);
+	Mike.fun();
+	Johnson.print();
+	return 0;
+}
+
+/*
+class Base
+{
+public:
+	virtual void Func1()
+	{
+		cout << "Func1()" << endl;
+	}
+private:
+	int _b = 1;//4
+};
+int main()
+{
+	cout << sizeof(Base) << endl;
+	return 0;
+}
+
+/*
+
+class Person 
+{
+public:
+	virtual void BuyTicket() 
+	{ cout << "买票-全价" << endl; }
+};
+class Student : public Person 
+{
+public:
+	virtual void BuyTicket()
+	{ cout << "买票-半价" << endl; }
+};
+void Func(Person& p)
+{
+	p.BuyTicket();
+}
+int main()
+{
+	Person Mike;
+	Func(Mike);
+	Student Johnson;
+	Func(Johnson);
+	return 0;
+}
+/*
+
+class Person
+{
+public:
+	virtual Person* f()=0
+	{
+		cout << "this is Person:f()\n";
+		return nullptr;
+	}
+};
+class Student : public Person
+{
+public:
+	virtual Student* f()
+	{
+		cout << "this is Student:f()\n";
+		return nullptr;
+	}
+};
+
+void Func(Person& p)
+{
+	p.f();
+}
+int main()
+{
+	//Person pe;//错误，基类无法在实例化对象
+	Student stu;
+	Func(stu);
+	return 0;
+}
+
+
+/*
+class Person 
+{
+public:
+	virtual Person* f()
+	{ 
+		cout << "this is Person:f()\n";
+		return nullptr;
+	}
+};
+class Student : public Person 
+{
+public:
+	virtual Student* f() 
+	{ 
+		cout << "this is Student:f()\n";
+		return nullptr;
+	}
+};
+void Func(Person& p)
+{
+	p.f();
+}
+int main()
+{
+	Student stu;
+	Func(stu);
+	return 0;
+}
+
+/*
 class people
 {
 public:
