@@ -19,6 +19,36 @@
 using namespace std;
 
 
+
+class Person 
+{
+public:
+	virtual Person* f()
+	{ 
+		cout << "this is Person:f()\n";
+		return nullptr;
+	}
+};
+class Student : public Person 
+{
+public:
+	virtual Student* f() 
+	{ 
+		cout << "this is Student:f()\n";
+		return nullptr;
+	}
+};
+void Func(Person& p)
+{
+	p.f();
+}
+int main()
+{
+	Student stu;
+	Func(stu);
+	return 0;
+}
+
 /*
 
 class Base
