@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-﻿生成启动时间为 2020/6/16 23:23:04。
-=======
-﻿生成启动时间为 2020/6/14 23:54:58。
->>>>>>> fae32d421383d6c56d320d89d82ccc74ac730c9f
+﻿生成启动时间为 2020/6/16 23:42:18。
      1>项目“E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Pro_OJ(cpp.)\Pro_OJ(cpp.).vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Test.cpp
@@ -14,8 +10,4 @@
 
 生成成功。
 
-<<<<<<< HEAD
-已用时间 00:00:00.61
-=======
-已用时间 00:00:00.70
->>>>>>> fae32d421383d6c56d320d89d82ccc74ac730c9f
+已用时间 00:00:01.08

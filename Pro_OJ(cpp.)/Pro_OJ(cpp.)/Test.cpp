@@ -19,7 +19,46 @@
 using namespace std;
 
 
+/*
 
+class Base
+{
+
+public:
+	virtual void fun()
+	{
+		cout << "Base::fun()" << endl;
+	}
+	virtual void print()
+	{
+		cout << "Base::fun()" << endl;
+	}
+};
+
+class student : public Base
+{
+public:
+	void fun()
+	{
+		cout << "student::fun()" << endl;
+	}
+	void print()
+	{
+		cout << "student::print()" << endl;
+	}
+};
+
+int main()
+{
+	student st;
+	Base* p = &st;
+	p->fun();
+	p->print();
+	return 0;
+}
+
+
+/*
 class Person 
 {
 public:
