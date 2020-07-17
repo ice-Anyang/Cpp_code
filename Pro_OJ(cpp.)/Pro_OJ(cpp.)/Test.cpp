@@ -16,8 +16,799 @@
 #include<thread>
 #include<assert.h>
 #include<string.h>
+#include<map>
 using namespace std;
 
+
+
+
+/*
+typedef enum{ RED = 0, BLACK }Color_Type;
+
+template<typename Type>
+class RBTree;
+template<typename Type>
+class rb_iterator;
+
+template<typename Type>
+class RBTreeNode
+{
+	friend class RBTree<Type>;
+	friend class rb_iterator<Type>;
+public:
+	RBTreeNode(const Type &val = Type())
+		:data(val), left(nullptr), right(nullptr), parent(nullptr), color(RED)
+	{}
+	~RBTreeNode()
+	{}
+private:
+	Type data;
+	RBTreeNode *left;
+	RBTreeNode *right;
+	RBTreeNode *parent;
+	Color_Type color;
+};
+
+/////////////////////////////////////////////////////////////////
+template<typename Type>
+class rb_iterator
+{
+	typedef rb_iterator self;
+public:
+	rb_iterator(RBTreeNode<Type> *p, RBTreeNode<Type> *nil) :node(p), NIL(nil)
+	{}
+public:
+	Type& operator*()
+	{
+		return node->data;
+	}
+	self& operator++()
+	{
+		increment();
+		return *this;
+	}
+	self& operator--()
+	{
+		decrement();
+		return *this;
+	}
+public:
+	bool operator==(const rb_iterator &rbit)
+	{
+		return node == rbit.node;
+	}
+	bool operator!=(const rb_iterator &rbit)
+	{
+		return node != rbit.node;
+	}
+protected:
+	void increment()
+	{
+		if (node->right != NIL)
+		{
+			node = node->right;
+			while (node->left != NIL)
+				node = node->left;
+		}
+		else
+		{
+			RBTreeNode<Type> *p = node->parent;
+			while (node == p->right)
+			{
+				node = p;
+				p = p->parent;
+			}
+			node = p;
+		}
+	}
+	void decrement()
+	{
+		if (node->left != NIL)
+		{
+			node = node->left;
+			while (node->right != NIL)
+				node = node->right;
+		}
+		else
+		{
+			RBTreeNode<Type> *p = node->parent;
+			while (node == p->left)
+			{
+				node = p;
+				p = p->parent;
+			}
+			node = p;
+		}
+	}
+private:
+	RBTreeNode<Type> *node;
+	RBTreeNode<Type> *NIL;
+};
+/////////////////////////////////////////////////////////////////
+
+template<typename Type>
+class RBTree
+{
+public:
+	typedef rb_iterator<Type> iterator;
+public:
+	RBTree() : NIL(_Buynode()), end_node(_Buynode())
+	{
+		NIL->left = NIL->right = NIL->parent = NIL;
+		NIL->color = BLACK;
+
+		end_node->left = end_node->right = end_node->parent = NIL;
+
+		root = NIL;
+	}
+public:
+	iterator begin()
+	{
+		RBTreeNode<Type> *p = root;
+		while (p != NIL && p->left != NIL)
+			p = p->left;
+		return iterator(p, NIL);
+	}
+	iterator end()
+	{
+		return iterator(end_node, NIL);
+	}
+public:
+	void set_endnode()
+	{
+		RBTreeNode<Type> *p = root;
+		while (p != NIL && p->right != NIL)
+			p = p->right;
+		p->right = end_node;
+	}
+	void  insert(const Type &x)
+	{
+		insert(root, x);
+	}
+protected:
+	void  insert(RBTreeNode<Type> *&t, const Type &x)
+	{
+		//1、根据BST的规则，找到插入位置，并把新节点进行插入
+		RBTreeNode<Type> *pr = NIL;
+		RBTreeNode<Type> *p = t;
+		while (p != NIL)
+		{
+			if (x == p->data) //重复值
+				return;
+
+			pr = p;
+
+			if (x < p->data)
+				p = p->left;
+			else
+				p = p->right;
+		}
+
+		RBTreeNode<Type> *s = _Buynode(x);
+		if (pr == NIL)
+		{
+			//第一次插入根节点
+			t = s;
+			t->parent = NIL;
+		}
+		else if (x < pr->data)
+			pr->left = s;
+		else
+			pr->right = s;
+		s->parent = pr;
+
+		//2、平衡调整
+		insert_fixup(t, s);
+	}
+
+	//void erase(const Type &key);
+
+protected:
+	void insert_fixup(RBTreeNode<Type> *&t, RBTreeNode<Type> *x)
+	{
+		//x为新插节点，s为叔伯节点，p为父节点,g为祖父节点
+		while (x->parent->color == RED)
+		{
+			RBTreeNode<Type> *s;
+			if (x->parent == x->parent->parent->left) //左分支
+			{
+				s = x->parent->parent->right;
+
+				if (s->color == RED) //状况3
+				{
+					x->parent->color = BLACK;
+					s->color = BLACK;
+					x->parent->parent->color = RED;
+					x = x->parent->parent;
+					continue;
+				}
+				else if (x == x->parent->right) //状况2  // <
+				{
+					x = x->parent;
+					LeftRotate(t, x);
+				}
+				//状况1
+				x->parent->color = BLACK;
+				x->parent->parent->color = RED;
+				RightRotate(t, x->parent->parent);
+			}
+			else //右分支
+			{
+				s = x->parent->parent->left;
+				if (s->color == RED) ////状况3
+				{
+					x->parent->color = BLACK;
+					s->color = BLACK;
+					x->parent->parent->color = RED;
+					x = x->parent->parent;
+					continue;
+				}
+				else if (x == x->parent->left) //状况2  // >
+				{
+					x = x->parent;
+					RightRotate(t, x);
+				}
+
+				//状况1
+				x->parent->color = BLACK;
+				x->parent->parent->color = RED;
+				LeftRotate(t, x->parent->parent);
+			}
+		}
+		t->color = BLACK;
+	}
+
+	//旋转方法都以p节点为轴点进行旋转
+	void LeftRotate(RBTreeNode<Type> *&t, RBTreeNode<Type> *p)
+	{
+		RBTreeNode<Type> *s = p->right;
+		p->right = s->left;
+		if (s->left != NIL)
+			s->left->parent = p;
+		s->parent = p->parent;
+		if (p->parent == NIL)
+			t = s;
+		else if (p == p->parent->left)
+			p->parent->left = s;
+		else
+			p->parent->right = s;
+
+		s->left = p;
+		p->parent = s;
+	}
+	void RightRotate(RBTreeNode<Type> *&t, RBTreeNode<Type> *p)
+	{
+		RBTreeNode<Type> *s = p->left;
+		p->left = s->right;
+		if (s->right != NIL)
+			s->right->parent = p;
+		s->parent = p->parent;
+		if (p->parent == NIL)
+			t = s;
+		else if (p == p->parent->left)
+			p->parent->left = s;
+		else
+			p->parent->right = s;
+
+		s->right = p;
+		p->parent = s;
+	}
+protected:
+	RBTreeNode<Type>* _Buynode(const Type &val = Type())
+	{
+		RBTreeNode<Type>* _S = new RBTreeNode<Type>(val);
+		_S->left = _S->right = _S->parent = NIL;
+		return _S;
+	}
+private:
+	RBTreeNode<Type> *root;
+	RBTreeNode<Type> *NIL;
+	RBTreeNode<Type> *end_node; //结束节点
+};
+
+
+namespace ice
+{
+	template<class K, class V>
+	class map
+	{
+		typedef pair<K, V> ValueType;
+		struct KeyOfValue
+		{
+			const K& operator()(const ValueType& v)
+			{
+				return v.first;
+			}
+		};
+		typedef RBTree<K, ValueType, KeyOfValue> RBTree;
+	public:
+		typedef typename RBTree::Iterator iterator;
+	public:
+		map(){}
+		
+		iterator begin(){ return _t.Begin(); }
+		iterator end(){ return _t.End(); }
+		
+		size_t size()const{ return _t.Size(); }
+		bool empty()const{ return _t.Empty(); }
+		
+		V& operator[](const K& key)
+		{
+			return (*(_t.Insert(ValueType(key, V()))).first).second;
+		}
+		const V& operator[](const K& key)const;
+		
+		pair<iterator, bool> insert(const ValueType& data) { return _t.Insert(data); }
+		void clear(){ _t.Clear(); }
+		iterator find(const K& key){ return _t.Find(key); }
+	private:
+		RBTree _t;
+	};
+}
+
+/*
+int main()
+{
+	map<int, string> ismap;
+
+	//pair<int, string> v1 = { 1, "zhangsan" };
+	//pair<int, string> v2 = { 2, "lisi" };
+	//pair<int, string> v5 = { 5, "wuyan" };
+	//pair<int, string> v3 = { 3, "wangwu" };
+	//pair<int, string> v4 = { 4, "liuliu" };
+
+	//ismap.insert(v1);
+	//ismap.insert(v2);
+	//ismap.insert(v5);
+	//ismap.insert(v3);
+	//ismap.insert(v4);
+
+	//1.利用[]进行插入
+	ismap[1] = { "zhangsan" };
+	ismap[2] = { "lisi" };
+	ismap[5] = { "wuyan" };
+	ismap[4] = { "liuliu" };
+	ismap[3] = { "wangwu" };
+
+	auto it = ismap.begin();
+	while (it != ismap.end())
+	{
+		cout << it->first << ":" << it->second << endl;
+		++it;
+	}
+	cout << "----------------------------" << endl;
+	//2.删除操作
+	ismap.erase(1);
+	ismap.erase(4);
+	auto it1 = ismap.begin();
+	//C++11遍历方式
+	for (const auto& e : ismap)
+		cout << e.first << ":" << e.second << endl;
+	cout << "----------------------------" << endl;
+	//3. 修改操作
+	ismap[2] = { "nihaoa" };
+	map<int, string> ::iterator it2 = ismap.begin();
+
+	for (; it2 != ismap.end(); ++it2)
+	{
+		cout << it2->first << ":" << it2->second << endl;
+	}
+
+	return 0;
+}
+
+
+/*
+
+int main()
+{
+	map<int, string> ismap;
+	pair<int, string> v1 = { 1, "zhangsan" };
+	pair<int, string> v2 = { 2, "lisi" };
+	pair<int, string> v3 = { 3, "wangwu" };
+	pair<int, string> v5 = { 3, "wangwu" };
+
+	pair<int, string> v4 = { 4, "liuliu" };
+
+	ismap.insert(v1);
+	ismap.insert(v2);
+	ismap.insert(v3);
+	ismap.insert(v4);
+
+	cout << ismap.empty() << endl;// 0 
+	cout <<"size = "<< ismap.size() << endl;// 4:底层会自动删除相同内容，会对存储数据按照key排序
+	cout << ismap.count(3) << endl;//1
+	cout << ismap[1] << endl;//zhangsan
+
+
+
+	return 0;
+}
+
+
+
+/*
+int main()
+{
+	map<int, string> ismap;
+
+	//pair<int, string> v1 = { 1, "zhangsan" };
+	//pair<int, string> v2 = { 2, "lisi" };
+	//pair<int, string> v5 = { 5, "wuyan" };
+	//pair<int, string> v3 = { 3, "wangwu" };
+	//pair<int, string> v4 = { 4, "liuliu" };
+
+	//ismap.insert(v1);
+	//ismap.insert(v2);
+	//ismap.insert(v5);
+	//ismap.insert(v3);
+	//ismap.insert(v4);
+
+	//利用[]进行插入
+	ismap[1] = { "zhangsan" };
+	ismap[2] = { "lisi" };
+	ismap[5] = { "wuyan" };
+	ismap[4] = { "liuliu" };
+	ismap[3] = { "wangwu" };
+
+	auto it = ismap.begin();
+	while (it!= ismap.end())
+	{
+		cout << it->first << ":" << it->second << endl;
+		++it;
+	}
+
+	return 0;
+}
+
+/*
+int main()
+{
+	// map 的构造
+	map<int, string> ismap;
+	return 0;
+}
+
+/*
+int main()
+{
+	map<int, string> ismap;
+	pair<int, string> v1 = { 1, "zhangsan" };
+	pair<int, string> v2 = { 2, "lisi" };
+	pair<int, string> v3 = { 3, "wangwu" };
+	pair<int, string> v4 = { 4, "liuliu" };
+
+	ismap.insert(v1);
+	ismap.insert(v2);
+	ismap.insert(v3);
+	ismap.insert(v4);
+
+
+	return 0;
+}
+
+
+/*
+
+int main()
+{
+	union stu
+	{
+		int i = 1;
+		char a;
+	}st;
+
+	if (st.a == 1)
+		cout << "小端存储" << endl;
+	else
+		cout << "大端存储" << endl;
+	return 0;
+}
+
+/*
+
+
+typedef enum{ RED = 0, BLACK }Color_Type;
+
+template<typename Type>
+class RBTree;
+template<typename Type>
+class rb_iterator;
+
+template<typename Type>
+class RBTreeNode
+{
+	friend class RBTree<Type>;
+	friend class rb_iterator<Type>;
+public:
+	RBTreeNode(const Type &val = Type())
+		:data(val), left(nullptr), right(nullptr), parent(nullptr), color(RED)
+	{}
+	~RBTreeNode()
+	{}
+private:
+	Type data;
+	RBTreeNode *left;
+	RBTreeNode *right;
+	RBTreeNode *parent;
+	Color_Type color;
+};
+
+/////////////////////////////////////////////////////////////////
+template<typename Type>
+class rb_iterator
+{
+	typedef rb_iterator self;
+public:
+	rb_iterator(RBTreeNode<Type> *p, RBTreeNode<Type> *nil) :node(p), NIL(nil)
+	{}
+public:
+	Type& operator*()
+	{
+		return node->data;
+	}
+	self& operator++()
+	{
+		increment();
+		return *this;
+	}
+	self& operator--()
+	{
+		decrement();
+		return *this;
+	}
+public:
+	bool operator==(const rb_iterator &rbit)
+	{
+		return node == rbit.node;
+	}
+	bool operator!=(const rb_iterator &rbit)
+	{
+		return node != rbit.node;
+	}
+protected:
+	void increment()
+	{
+		if (node->right != NIL)
+		{
+			node = node->right;
+			while (node->left != NIL)
+				node = node->left;
+		}
+		else
+		{
+			RBTreeNode<Type> *p = node->parent;
+			while (node == p->right)
+			{
+				node = p;
+				p = p->parent;
+			}
+			node = p;
+		}
+	}
+	void decrement()
+	{
+		if (node->left != NIL)
+		{
+			node = node->left;
+			while (node->right != NIL)
+				node = node->right;
+		}
+		else
+		{
+			RBTreeNode<Type> *p = node->parent;
+			while (node == p->left)
+			{
+				node = p;
+				p = p->parent;
+			}
+			node = p;
+		}
+	}
+private:
+	RBTreeNode<Type> *node;
+	RBTreeNode<Type> *NIL;
+};
+/////////////////////////////////////////////////////////////////
+
+template<typename Type>
+class RBTree
+{
+public:
+	typedef rb_iterator<Type> iterator;
+public:
+	RBTree() : NIL(_Buynode()), end_node(_Buynode())
+	{
+		NIL->left = NIL->right = NIL->parent = NIL;
+		NIL->color = BLACK;
+
+		end_node->left = end_node->right = end_node->parent = NIL;
+
+		root = NIL;
+	}
+public:
+	iterator begin()
+	{
+		RBTreeNode<Type> *p = root;
+		while (p != NIL && p->left != NIL)
+			p = p->left;
+		return iterator(p, NIL);
+	}
+	iterator end()
+	{
+		return iterator(end_node, NIL);
+	}
+public:
+	void set_endnode()
+	{
+		RBTreeNode<Type> *p = root;
+		while (p != NIL && p->right != NIL)
+			p = p->right;
+		p->right = end_node;
+	}
+	void  insert(const Type &x)
+	{
+		insert(root, x);
+	}
+protected:
+	void  insert(RBTreeNode<Type> *&t, const Type &x)
+	{
+		//1、根据BST的规则，找到插入位置，并把新节点进行插入
+		RBTreeNode<Type> *pr = NIL;
+		RBTreeNode<Type> *p = t;
+		while (p != NIL)
+		{
+			if (x == p->data) //重复值
+				return;
+
+			pr = p;
+
+			if (x < p->data)
+				p = p->left;
+			else
+				p = p->right;
+		}
+
+		RBTreeNode<Type> *s = _Buynode(x);
+		if (pr == NIL)
+		{
+			//第一次插入根节点
+			t = s;
+			t->parent = NIL;
+		}
+		else if (x < pr->data)
+			pr->left = s;
+		else
+			pr->right = s;
+		s->parent = pr;
+
+		//2、平衡调整
+		insert_fixup(t, s);
+	}
+
+	//void erase(const Type &key);
+
+protected:
+	void insert_fixup(RBTreeNode<Type> *&t, RBTreeNode<Type> *x)
+	{
+		//x为新插节点，s为叔伯节点，p为父节点,g为祖父节点
+		while (x->parent->color == RED)
+		{
+			RBTreeNode<Type> *s;
+			if (x->parent == x->parent->parent->left) //左分支
+			{
+				s = x->parent->parent->right;
+
+				if (s->color == RED) //状况3
+				{
+					x->parent->color = BLACK;
+					s->color = BLACK;
+					x->parent->parent->color = RED;
+					x = x->parent->parent;
+					continue;
+				}
+				else if (x == x->parent->right) //状况2  // <
+				{
+					x = x->parent;
+					LeftRotate(t, x);
+				}
+				//状况1
+				x->parent->color = BLACK;
+				x->parent->parent->color = RED;
+				RightRotate(t, x->parent->parent);
+			}
+			else //右分支
+			{
+				s = x->parent->parent->left;
+				if (s->color == RED) ////状况3
+				{
+					x->parent->color = BLACK;
+					s->color = BLACK;
+					x->parent->parent->color = RED;
+					x = x->parent->parent;
+					continue;
+				}
+				else if (x == x->parent->left) //状况2  // >
+				{
+					x = x->parent;
+					RightRotate(t, x);
+				}
+
+				//状况1
+				x->parent->color = BLACK;
+				x->parent->parent->color = RED;
+				LeftRotate(t, x->parent->parent);
+			}
+		}
+		t->color = BLACK;
+	}
+
+	//旋转方法都以p节点为轴点进行旋转
+	void LeftRotate(RBTreeNode<Type> *&t, RBTreeNode<Type> *p)
+	{
+		RBTreeNode<Type> *s = p->right;
+		p->right = s->left;
+		if (s->left != NIL)
+			s->left->parent = p;
+		s->parent = p->parent;
+		if (p->parent == NIL)
+			t = s;
+		else if (p == p->parent->left)
+			p->parent->left = s;
+		else
+			p->parent->right = s;
+
+		s->left = p;
+		p->parent = s;
+	}
+	void RightRotate(RBTreeNode<Type> *&t, RBTreeNode<Type> *p)
+	{
+		RBTreeNode<Type> *s = p->left;
+		p->left = s->right;
+		if (s->right != NIL)
+			s->right->parent = p;
+		s->parent = p->parent;
+		if (p->parent == NIL)
+			t = s;
+		else if (p == p->parent->left)
+			p->parent->left = s;
+		else
+			p->parent->right = s;
+
+		s->right = p;
+		p->parent = s;
+	}
+protected:
+	RBTreeNode<Type>* _Buynode(const Type &val = Type())
+	{
+		RBTreeNode<Type>* _S = new RBTreeNode<Type>(val);
+		_S->left = _S->right = _S->parent = NIL;
+		return _S;
+	}
+private:
+	RBTreeNode<Type> *root;
+	RBTreeNode<Type> *NIL;
+	RBTreeNode<Type> *end_node; //结束节点
+};
+
+int main()
+{
+	vector<int> v = { 10, 7, 4, 2, 80, 15, 5, 6, 11, 13, 12 };
+
+	RBTree<int> rb;
+	for (const auto &e : v)
+		rb.insert(e);
+	rb.set_endnode();
+
+	RBTree<int>::iterator it = rb.begin();
+	while (it != rb.end())
+	{
+		cout << *it << " ";
+		++it;
+	}
+
+	return 0;
+}
 
 
 /*
