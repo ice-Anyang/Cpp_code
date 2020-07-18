@@ -3,7 +3,7 @@
 #include<list>
 #include<vector>
 #include<queue>
-//#include<stack>
+#include<stack>
 #include<string>
 #include<stdio.h>
 #include<algorithm>
@@ -17,8 +17,737 @@
 #include<assert.h>
 #include<string.h>
 #include<map>
+#include<set>
+#include<atomic>
+#include<mutex>
 using namespace std;
 
+class Rate
+{
+public:
+	Rate(double rate) : _rate(rate)
+	{}
+	double operator()(double money, int year)
+	{
+		return money * _rate * year;
+	}
+private:
+	double _rate;
+};
+int main()
+{
+	// 函数对象
+	double rate = 0.49;
+	Rate r1(rate);
+	r1(10000, 2);
+	// lamber
+	auto r2 = [=](double monty, int year)->double{return monty*rate*year; };
+	r2(10000, 2);
+	return 0;
+}
+
+/*
+template<class _Mutex>
+class lock_guard
+{
+public:
+	// 在构造lock_gard时，_Mtx还没有被上锁
+	explicit lock_guard(_Mutex& _Mtx)
+		: _MyMutex(_Mtx)
+	{
+		_MyMutex.lock();
+	}
+	// 在构造lock_gard时，_Mtx已经被上锁，此处不需要再上锁
+	lock_guard(_Mutex& _Mtx, adopt_lock_t)
+		: _MyMutex(_Mtx)
+	{}
+	~lock_guard() 
+	{
+		_MyMutex.unlock();
+	}
+	lock_guard(const lock_guard&) = delete;
+	lock_guard& operator=(const lock_guard&) = delete;
+private:
+	_Mutex& _MyMutex;
+};
+
+/*
+int number = 0;
+mutex g_lock;
+
+void ThreadFun1()
+{
+	for (int i = 0; i < 100; i++)
+	{
+		g_lock.lock();
+		++number;
+		cout << "thread 1 :" << number << endl;
+		g_lock.unlock();
+	}
+}
+
+void ThreadFun2()
+{
+	for (int i = 0; i < 100; i++)
+	{
+		g_lock.lock();
+		--number;
+		cout << "thread 1 :" << number << endl;
+		g_lock.unlock();
+	}
+}
+
+int main()
+{
+	thread t1(ThreadFun1);
+	thread t2(ThreadFun2);
+	t1.join();
+	t2.join();
+
+	cout << "number : " << number << endl;
+	return 0;
+}
+
+
+
+/*
+
+atomic_int sum{ 0 };
+void fun(size_t num)
+{
+	for (size_t i = 0; i < num; ++i)
+		sum++; // 原子操作
+}
+int main()
+{
+	cout << "sum = " << sum << std::endl;
+	thread t1(fun, 1000);
+	thread t2(fun, 1000);
+	t1.join();
+	t2.join();
+	cout << "sum = " << sum << std::endl;
+	return 0;
+}
+
+
+/*
+#include <thread>
+#include <mutex>
+std::mutex m;
+unsigned long sum = 0L;
+void fun(size_t num)
+{
+	for (size_t i = 0; i < num; ++i)
+	{
+		m.lock();
+		sum++;
+		m.unlock();
+	}
+}
+int main()
+{
+	cout << "Before joining,sum = " << sum << std::endl;
+	thread t1(fun, 100);
+	thread t2(fun, 100);
+	t1.join();
+	t2.join();
+	cout << "After joining,sum = " << sum << std::endl;
+	return 0;
+}
+
+
+/*
+
+void ThreadFun1(int& x)
+{
+	x += 20;
+}
+void ThreadFun2(int* x)
+{
+	*x += 20;
+}
+
+int main()
+{
+	int a = 10;
+
+	thread t1(ThreadFun1, a);
+	t1.join();
+	//线程函数参数虽然是引用方式，但其实际引用的是线程栈中的拷贝
+	cout << a << endl;// 10 
+
+	// 如果想要通过形参改变外部实参时，必须借助std::ref()函数
+	thread t3(ThreadFun1, std::ref(a));
+	t3.join();
+	cout << a << endl;//30
+
+	thread t2(ThreadFun2, &a);
+	t2.join();
+	cout << a << endl;//50
+
+	return 0;
+}
+
+
+
+/*
+
+// lambda表达式：
+int main()
+{
+	//最简单的lambda表达式
+	auto f1 = []{};
+
+	int a = 3;
+	int b = 4;
+	//省略参数列表
+	[=]{return a + b; };
+
+	//省略返回值类型，
+	auto f2 = [=,&b](int c){return b = a + c; };
+
+	f2(10);
+	cout << f2(10) << endl;
+
+	auto fun2 = [=, &b](int c)->int{return b += a + c; };
+	cout << fun2(10) << endl;
+
+	
+	return 0;
+}
+
+
+/*
+
+void Fun(int &&x){ cout << "rvalue ref" << endl; }
+void Fun(const int &x){ cout << "const lvalue ref" << endl; }
+void Fun(const int &&x){ cout << "const rvalue ref" << endl; }
+template<typename T>
+void PerfectForward(T &&t){ Fun(std::forward<T>(t)); }
+int main()
+{
+	PerfectForward(10); // rvalue ref
+	int a;
+	PerfectForward(a); // lvalue ref
+	PerfectForward(std::move(a)); // rvalue ref
+	const int b = 8;
+	PerfectForward(b); // const lvalue ref
+	PerfectForward(std::move(b)); // const rvalue ref
+	return 0;
+}
+/*
+
+int main()
+{
+	//s1此时无效
+	string s1("string");
+	string s2(move(s1));
+	string s3(s2);
+
+	for (auto& e : s1)
+		cout << e << " ";
+	cout << endl;//空的
+	return 0;
+}
+
+/*
+
+int main()
+{
+	// 10纯右值，本来只是一个符号，没有具体的空间，
+	// 右值引用变量r1在定义过程中，编译器产生了一个临时变量，r1实际引用的是临时变量
+	int&& r1 = 10;
+	r1 = 100;
+	int a = 10;
+	//int&& r2 = a; // 编译失败：右值引用不能引用左值
+	return 0;
+}
+
+
+/*
+
+int main()
+{
+	int a = 10;
+	int& pa = a;
+	const int& pc = a;
+	a = 20;
+	cout << pa << endl;
+	//int& pb = 20;错误；
+	const int& pb = 20;//
+	cout << pb << endl;
+
+	const int a1 = 10;
+	// int& pa1 = a1; //由于a1 为 const int 类型 所以左值引用会出现错误
+	// pa1 = 20;
+	cout << a1<< endl;
+	//cout << pa1 << endl;
+	return 0;
+}
+
+
+
+/*
+class A
+{
+public:
+	A() = default;
+	A(int a) : _a(a)
+	{}
+	// 禁止编译器生成默认的拷贝构造函数以及赋值运算符重载
+	A(const A&) = delete;
+	A& operator=(const A&) = delete;
+private:
+	int _a;
+};
+int main()
+{
+	A a1(10);
+	A a;
+	//A a2(a1);//错误
+	return 0;
+}
+
+
+
+/*
+int main()
+{
+	int arr[] {1, 2, 3, 4, 5};
+	for (auto& e : arr)
+		cout << e << " ";
+	cout << endl;
+
+	vector<int> vt{ 1, 2, 3, 4, 5, 6 };
+
+	for (auto& e : vt)
+		cout << e << " ";
+	cout << endl;
+
+	return 0;
+}
+
+/*
+void* fun(size_t size)
+{
+	return malloc(size);
+}
+
+int main()
+{
+	//函数的类型
+	cout << typeid(decltype(fun)).name() << endl;
+	//函数返回值类型
+	cout << typeid(decltype(fun(0))).name() << endl;
+
+	return 0;
+}
+
+
+/*
+int main()
+{
+	int a = 1;
+	int c = 2;
+
+	decltype(a + c) d = 10;
+	cout << typeid(d).name() << endl;//int
+
+	return 0;
+}
+
+/*
+
+int main()
+{
+	int a = 10;
+	//必须知道a的类型，才能auto出c的类型
+	auto c = a;
+	c = 12;
+	cout << c << endl;
+	return 0;
+}
+
+/*
+
+int main()
+{
+	//内置类型
+	int arr[] = { 1, 2, 3, 4, 5 };//c++98
+	int arr1[]{1, 2, 3, 4, 5};//c++11
+	int x{ 1 };//c++11
+	int y{ 1 + 2 };//c++11
+	//动态数组C++98没有
+	int* arr2 = new int[6]{ 1, 2, 3, 4, 5, 6 };
+	//容器
+	set<int> s1{ 1, 2, 3, 4, 5 };
+
+
+	return 0;
+}
+
+/*
+
+typedef enum{ RED = 0, BLACK }Color_Type;
+
+template<typename Type>
+class RBTree;
+template<typename Type>
+class rb_iterator;
+
+template<typename Type>
+class RBTreeNode
+{
+	friend class RBTree<Type>;
+	friend class rb_iterator<Type>;
+public:
+	RBTreeNode(const Type &val = Type())
+		:data(val), left(nullptr), right(nullptr), parent(nullptr), color(RED)
+	{}
+	~RBTreeNode()
+	{}
+private:
+	Type data;
+	RBTreeNode *left;
+	RBTreeNode *right;
+	RBTreeNode *parent;
+	Color_Type color;
+};
+
+/////////////////////////////////////////////////////////////////
+template<typename Type>
+class rb_iterator
+{
+	typedef rb_iterator self;
+public:
+	rb_iterator(RBTreeNode<Type> *p, RBTreeNode<Type> *nil) :node(p), NIL(nil)
+	{}
+public:
+	Type& operator*()
+	{
+		return node->data;
+	}
+	self& operator++()
+	{
+		increment();
+		return *this;
+	}
+	self& operator--()
+	{
+		decrement();
+		return *this;
+	}
+public:
+	bool operator==(const rb_iterator &rbit)
+	{
+		return node == rbit.node;
+	}
+	bool operator!=(const rb_iterator &rbit)
+	{
+		return node != rbit.node;
+	}
+protected:
+	void increment()
+	{
+		if (node->right != NIL)
+		{
+			node = node->right;
+			while (node->left != NIL)
+				node = node->left;
+		}
+		else
+		{
+			RBTreeNode<Type> *p = node->parent;
+			while (node == p->right)
+			{
+				node = p;
+				p = p->parent;
+			}
+			node = p;
+		}
+	}
+	void decrement()
+	{
+		if (node->left != NIL)
+		{
+			node = node->left;
+			while (node->right != NIL)
+				node = node->right;
+		}
+		else
+		{
+			RBTreeNode<Type> *p = node->parent;
+			while (node == p->left)
+			{
+				node = p;
+				p = p->parent;
+			}
+			node = p;
+		}
+	}
+private:
+	RBTreeNode<Type> *node;
+	RBTreeNode<Type> *NIL;
+};
+/////////////////////////////////////////////////////////////////
+
+template<typename Type>
+class RBTree
+{
+public:
+	typedef rb_iterator<Type> iterator;
+public:
+	RBTree() : NIL(_Buynode()), end_node(_Buynode())
+	{
+		NIL->left = NIL->right = NIL->parent = NIL;
+		NIL->color = BLACK;
+
+		end_node->left = end_node->right = end_node->parent = NIL;
+
+		root = NIL;
+	}
+public:
+	iterator begin()
+	{
+		RBTreeNode<Type> *p = root;
+		while (p != NIL && p->left != NIL)
+			p = p->left;
+		return iterator(p, NIL);
+	}
+	iterator end()
+	{
+		return iterator(end_node, NIL);
+	}
+public:
+	void set_endnode()
+	{
+		RBTreeNode<Type> *p = root;
+		while (p != NIL && p->right != NIL)
+			p = p->right;
+		p->right = end_node;
+	}
+	void  insert(const Type &x)
+	{
+		insert(root, x);
+	}
+protected:
+	void  insert(RBTreeNode<Type> *&t, const Type &x)
+	{
+		//1、根据BST的规则，找到插入位置，并把新节点进行插入
+		RBTreeNode<Type> *pr = NIL;
+		RBTreeNode<Type> *p = t;
+		while (p != NIL)
+		{
+			if (x == p->data) //重复值
+				return;
+
+			pr = p;
+
+			if (x < p->data)
+				p = p->left;
+			else
+				p = p->right;
+		}
+
+		RBTreeNode<Type> *s = _Buynode(x);
+		if (pr == NIL)
+		{
+			//第一次插入根节点
+			t = s;
+			t->parent = NIL;
+		}
+		else if (x < pr->data)
+			pr->left = s;
+		else
+			pr->right = s;
+		s->parent = pr;
+
+		//2、平衡调整
+		insert_fixup(t, s);
+	}
+
+	//void erase(const Type &key);
+
+protected:
+	void insert_fixup(RBTreeNode<Type> *&t, RBTreeNode<Type> *x)
+	{
+		//x为新插节点，s为叔伯节点，p为父节点,g为祖父节点
+		while (x->parent->color == RED)
+		{
+			RBTreeNode<Type> *s;
+			if (x->parent == x->parent->parent->left) //左分支
+			{
+				s = x->parent->parent->right;
+
+				if (s->color == RED) //状况3
+				{
+					x->parent->color = BLACK;
+					s->color = BLACK;
+					x->parent->parent->color = RED;
+					x = x->parent->parent;
+					continue;
+				}
+				else if (x == x->parent->right) //状况2  // <
+				{
+					x = x->parent;
+					LeftRotate(t, x);
+				}
+				//状况1
+				x->parent->color = BLACK;
+				x->parent->parent->color = RED;
+				RightRotate(t, x->parent->parent);
+			}
+			else //右分支
+			{
+				s = x->parent->parent->left;
+				if (s->color == RED) ////状况3
+				{
+					x->parent->color = BLACK;
+					s->color = BLACK;
+					x->parent->parent->color = RED;
+					x = x->parent->parent;
+					continue;
+				}
+				else if (x == x->parent->left) //状况2  // >
+				{
+					x = x->parent;
+					RightRotate(t, x);
+				}
+
+				//状况1
+				x->parent->color = BLACK;
+				x->parent->parent->color = RED;
+				LeftRotate(t, x->parent->parent);
+			}
+		}
+		t->color = BLACK;
+	}
+
+	//旋转方法都以p节点为轴点进行旋转
+	void LeftRotate(RBTreeNode<Type> *&t, RBTreeNode<Type> *p)
+	{
+		RBTreeNode<Type> *s = p->right;
+		p->right = s->left;
+		if (s->left != NIL)
+			s->left->parent = p;
+		s->parent = p->parent;
+		if (p->parent == NIL)
+			t = s;
+		else if (p == p->parent->left)
+			p->parent->left = s;
+		else
+			p->parent->right = s;
+
+		s->left = p;
+		p->parent = s;
+	}
+	void RightRotate(RBTreeNode<Type> *&t, RBTreeNode<Type> *p)
+	{
+		RBTreeNode<Type> *s = p->left;
+		p->left = s->right;
+		if (s->right != NIL)
+			s->right->parent = p;
+		s->parent = p->parent;
+		if (p->parent == NIL)
+			t = s;
+		else if (p == p->parent->left)
+			p->parent->left = s;
+		else
+			p->parent->right = s;
+
+		s->right = p;
+		p->parent = s;
+	}
+protected:
+	RBTreeNode<Type>* _Buynode(const Type &val = Type())
+	{
+		RBTreeNode<Type>* _S = new RBTreeNode<Type>(val);
+		_S->left = _S->right = _S->parent = NIL;
+		return _S;
+	}
+private:
+	RBTreeNode<Type> *root;
+	RBTreeNode<Type> *NIL;
+	RBTreeNode<Type> *end_node; //结束节点
+};
+
+namespace ice
+{
+	template<class K>
+	class set
+	{
+		typedef K ValueType;
+		// 作用是：将value中的key提取出来
+		struct KeyOfValue
+		{
+			const K& operator()(const ValueType& key)
+			{
+				return key;
+			}
+		};
+		// 红黑树类型重命名
+		typedef RBTree<K, ValueType, KeyOfValue> RBTree;
+	public:
+		typedef typename RBTree::Iterator iterator;
+	public:
+		Set(){}
+		/////////////////////////////////////////////
+		// Iterator
+		iterator Begin()
+		{
+			return _t.Begin();
+		}
+		iterator End()
+		{
+			return _t.End();
+		}
+		/////////////////////////////////////////////////
+		// Capacity
+		size_t size()const
+		{
+			return _t.Size();
+		}
+		bool empty()const
+		{
+			return _t.Empty();
+		}
+		////////////////////////////////////////////////////
+		// modify
+		pair<iterator, bool> insert(const ValueType& data)
+		{
+			return _t.Insert(data);
+		}
+		void clear()
+		{
+			_t.Close()
+		}
+		iterator find(const K& key);
+	private:
+		RBTree _t;
+	};
+}
+
+
+/*
+
+int main()
+{
+	int arr[] = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10 };
+	set<int> s1(arr, arr + sizeof(arr) / sizeof(int));
+	for (auto& e : s1)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+
+	for (auto it = s1.rbegin(); it != s1.rend(); ++it)
+		cout << *it << " ";
+	cout << endl;
+	// set中值为3的元素出现了几次
+	cout << s1.count(3) << endl;
+
+	return 0;
+}
 
 
 
