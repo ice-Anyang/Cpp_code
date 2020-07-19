@@ -18,6 +18,7 @@
 #include<string.h>
 #include<map>
 #include<set>
+<<<<<<< HEAD
 #include<atomic>
 #include<mutex>
 using namespace std;
@@ -288,6 +289,10 @@ int main()
 
 
 /*
+=======
+using namespace std;
+
+>>>>>>> bc462998d0f13042a82258b7a6b3b9e115c6742f
 class A
 {
 public:
