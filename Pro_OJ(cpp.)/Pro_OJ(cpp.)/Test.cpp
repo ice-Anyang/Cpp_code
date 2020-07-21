@@ -18,11 +18,598 @@
 #include<string.h>
 #include<map>
 #include<set>
-<<<<<<< HEAD
 #include<atomic>
 #include<mutex>
+#include<memory>
 using namespace std;
 
+/*
+int main()
+{
+	int count = 0;//计算个数
+	int num = 0;
+	cin >> num;
+	while (num)
+	{
+		if (num & 1)
+			count++;
+		num = num >> 1;
+	}
+	cout << count << endl;
+	return 0;
+}
+
+
+/*
+#include<iostream>
+#include<math.h>
+using namespace std;
+bool isPrime(int num)
+{
+	if (num < 2)
+		return false;
+	for (int i = 2; i < sqrt(num); ++i)
+	{
+		if (num%i == 0)
+			return false;
+		return true;
+	}
+}
+int main()
+{
+	int num = 0;
+	cin >> num;
+	bool ret = isPrime(num);
+	if (ret == true)
+		cout << "true" << endl;
+	else
+		cout << "false" << endl;
+	return 0;
+}
+
+
+/*
+
+int main()
+{
+	int n = 0;
+	int m = 0;
+	int count = 0;
+	int arr[2] = { 0 };
+	vector<int> vt;
+	cin >> n;
+	for (int i = 0; i < n; ++n)
+	{
+		cin >> m;
+		vt.push_back(m);
+	}
+	sort(vt.begin(), vt.end());
+	/*auto it = vt.end();
+	auto it1 = it--;
+	while (it1 != vt.begin() && count>2)
+	{
+		if (it1 != it)
+		{
+			it--;
+			it1--;
+		}
+		if (it1 == it && count <= 2)
+		{
+			if (*it != arr[count])
+			{
+				arr[count] = *it;
+				count++;
+			}
+		}
+	}
+	if (it1 == vt.begin() && count < 2)
+		cout << "-1" << endl;
+	int tem = arr[0] * arr[1];
+	cout << tem << endl;
+	return 0;
+}
+
+
+
+/*
+
+void Swap(int& a, int& b)
+{
+	int tem = a;
+	a = b;
+	b = tem;
+}
+
+int main()
+{
+	int n = 0;
+	int num = 0;
+	int count = 0;
+	vector<int> vt;
+	cin >> n;
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> num;
+		vt.push_back(num);
+	}
+	for (int i = 0; i < vt.size(); ++i)
+	{
+		for (int j = i;j < vt.size()-1;++j)
+		{
+			if (vt[j]>vt[j + 1])
+			{
+				Swap(vt[j], vt[j + 1]);
+				count++;
+			}
+		}
+	}
+	cout << count << endl;
+	return 0;
+}
+
+
+/*
+int main()
+{
+	int n = 0;
+	int m = 0;
+	int count = 0;
+	int arr[2] = { 0 };
+	vector<int> vt;
+	cin >> n;
+	for (int i = 0; i < n; ++n)
+	{
+		cin >> m;
+		vt.push_back(m);
+	}
+	sort(vt.begin(), vt.end());
+	auto it = vt.end();
+	auto it1 = it--;
+	while (it1 != vt.begin() && count>2 )
+	{
+		if (it1 != it)
+		{
+			it--;
+			it1--;
+		}
+		if (it1==it && count <= 2)
+		{
+			arr[count] = *it;
+			count++;
+		}
+	}
+	if (it1 == vt.begin() && count < 2)
+		cout << "-1" << endl;
+	int tem = arr[0] * arr[1];
+	cout << tem << endl;
+	return 0;
+}
+
+/*
+
+template <class T>
+class SharedPtr
+{
+public:
+	SharedPtr(T* ptr = nullptr)
+		: _ptr(ptr)
+		, _pRefCount(new int(1))
+		, _pMutex(new mutex)
+	{}
+	~SharedPtr() { Release(); }
+	SharedPtr(const SharedPtr<T>& sp)
+		: _ptr(sp._ptr)
+		, _pRefCount(sp._pRefCount)
+		, _pMutex(sp._pMutex)
+	{
+		AddRefCount();
+	}
+	// sp1 = sp2
+	SharedPtr<T>& operator=(const SharedPtr<T>& sp)
+	{
+		//if (this != &sp)
+		if (_ptr != sp._ptr)
+		{
+			// 释放管理的旧资源
+			Release();
+			// 共享管理新对象的资源，并增加引用计数
+			_ptr = sp._ptr;
+			_pRefCount = sp._pRefCount;
+			_pMutex = sp._pMutex;
+			AddRefCount();
+		}
+		return *this;
+	}
+	T& operator*() { return *_ptr; }
+	T* operator->() { return _ptr; }
+	int UseCount() { return *_pRefCount; }
+	T* Get() { return _ptr; }
+	void AddRefCount()
+	{
+		// 加锁或者使用加1的原子操作
+		_pMutex->lock();
+		++(*_pRefCount);
+		_pMutex->unlock();
+	}
+private:
+	void Release()
+	{
+		bool deleteflag = false;
+		// 引用计数减1，如果减到0，则释放资源
+		_pMutex.lock();
+		if (--(*_pRefCount) == 0)
+		{
+			delete _ptr;
+			delete _pRefCount;
+			deleteflag = true;
+		}
+		_pMutex.unlock();
+		if (deleteflag == true)
+			delete _pMutex;
+	}
+private:
+	int* _pRefCount; // 引用计数
+	T* _ptr; // 指向管理资源的指针
+	mutex* _pMutex; // 互斥锁
+};
+int main()
+{
+	SharedPtr<int> sp1(new int(10));
+	SharedPtr<int> sp2(sp1);
+	*sp2 = 20;
+	cout << sp1.UseCount() << endl;
+	cout << sp2.UseCount() << endl;
+	SharedPtr<int> sp3(new int(10));
+	sp2 = sp3;
+	cout << sp1.UseCount() << endl;
+	cout << sp2.UseCount() << endl;
+	cout << sp3.UseCount() << endl;
+	sp1 = sp3;
+	cout << sp1.UseCount() << endl;
+	cout << sp2.UseCount() << endl;
+	cout << sp3.UseCount() << endl;
+	return 0;
+}
+
+/*
+class Date
+{
+public:
+	Date() 
+	{ cout << "Date()" << endl; }
+	~Date()
+	{ cout << "~Date()" << endl; }
+	int _year;
+	int _month;
+	int _day;
+};
+
+int main()
+{
+	shared_ptr<Date> sp(new Date);
+	shared_ptr<Date> copy(sp);
+	cout << "ref count:" << sp.use_count() << endl;
+	cout << "ref count:" << copy.use_count() << endl;
+	return 0;
+}
+
+/*
+// 模拟实现 uniqueptr
+template<class T>
+class UniquePtr
+{
+public:
+	UniquePtr(T * ptr = nullptr)
+		: _ptr(ptr)
+	{}
+	~UniquePtr()
+	{
+		
+		if (_ptr)
+			delete _ptr;
+	}
+	T& operator*() { return *_ptr; }
+	T* operator->() { return _ptr; }
+
+	//禁止拷贝构造和赋值
+	UniquePtr(UniquePte<T> const &) = delete;
+	UniquePtr<T> operator=(UniquePtr<T> const &) = delete;
+private:
+	T* _ptr;
+};
+
+int main()
+{
+
+	return 0;
+}
+
+/*
+//模拟实现auto_ptr
+template<class T>
+
+class Auto_ptr
+{
+	Auto_ptr(T* ptr = NULL) :_ptr(ptr)
+	{}
+	~Auto_ptr()
+	{
+		if (_ptr)
+			delete _ptr;
+	}
+
+	Auto_ptr(const Auto_ptr<T>& pa) :_ptr(pa._ptr)
+	{
+		pa._ptr = NULL;
+	}
+
+	Auto_ptr<T>& operator=(const Auto_ptr<T>& pa)
+	{
+		// 现在再从实现原理层来分析会发现，这里拷贝后把pa对象的指针赋空了，导致ap对象悬空
+		// 通过pa对象访问资源时就会出现问题
+		//检测自己是否给自己赋值
+		if (this != &pa)
+		{
+			//释放当前对象的资源
+			if (_ptr)
+				_ptr = NULL;
+			//转移pa中的资源到_ptr(当前对象);
+			_ptr = pa._ptr;
+
+			pa._ptr = NULL;
+		}
+	}
+
+	T& operator*()
+	{
+		return *_ptr;
+	}
+	T* operator->()
+	{
+		return _ptr;
+	}
+private:
+	T* _ptr;
+};
+
+class Date
+{
+public:
+	Date() { cout << "Date()" << endl; }
+	~Date(){ cout << "~Date()" << endl; }
+	int _year;
+	int _month;
+	int _day;
+};
+
+int main()
+{
+	Auto_ptr<Date> pa(new Date);
+
+	return 0;
+}
+
+/*
+
+template<class T>
+
+class SmartPtr
+{
+public:
+	SmartPtr(T* ptr = nullptr) :_ptr(ptr)
+	{}
+	~SmartPtr()
+	{
+		if (_ptr)
+			delete _ptr;
+	}
+	T& operator*()
+	{
+		return *_ptr;
+	}
+	T* operator->()
+	{
+		return _ptr;
+	}
+private:
+	T* _ptr;
+};
+
+/*
+mutex mut;
+static int a = 0;
+
+template<class T>
+class LockMutex
+{
+public:
+	LockMutemx(mutex& _mut) :_mutex(_mut)//
+	{
+		_mutex.lock();
+	}
+	~LockMutex()
+	{
+		_mutex.unlock();
+	}
+	LockMutex(const LockMutex<mutex>&) = delete;//没有拷贝构造。
+private:
+	mutex& _mutex;//互斥锁
+};
+
+void fun()
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		LockMutex<mutex> _Lo(mutex);
+		a++;
+	}
+}
+
+int main()
+{
+	thread t1(fun);
+	thread t2(fun);
+
+	t1.join();
+	t2.join();
+
+	cout << a << endl;
+	
+	return 0;
+}
+
+/*
+
+template<class T>
+class SmartPtr
+{
+public:
+	SmartPtr(T* ptr = nullptr) :_ptr(ptr)//构造函数
+	{
+	}
+
+	~SmartPtr()//析构函数
+	{
+		if (_ptr)
+			delete _ptr;
+	}
+private:
+	T* _ptr;
+};
+
+void MergeSort(int* a, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int)*n);
+	// 讲tmp指针委托给了sp对象，
+	SmartPtr<int> sp(tmp);
+}
+int main()
+{
+	try {
+		int a[5] = { 4, 5, 2, 3, 1 };
+		MergeSort(a, 5);
+	}
+	catch (const exception& e)
+	{
+		cout << e.what() << endl;
+	}
+	return 0;
+}
+
+/*
+int main()
+{
+	int a = 10;
+	int* p = &a;
+	SmartPtr<int> ptr(p);
+
+	return 0;
+}
+
+/*
+void fun() throw(int, double, short, char);
+
+void fun2(size_t size) throw(size_t);
+
+void fun3() throw();
+
+
+
+/*
+double Division(int a, int b)
+{
+	// 当b == 0时抛出异常
+	if (b == 0)
+	{
+		throw "this is B error";
+	}
+	return (double)a / (double)b;
+}
+void Func()
+{
+	// 这里可以看到如果发生除0错误抛出异常，另外下面的array没有得到释放。
+	// 所以这里捕获异常后并不处理异常，异常还是交给外面处理，这里捕获了再
+	// 重新抛出去。
+	int* array = new int[10];
+	try {
+		int len, time;
+		cin >> len >> time;
+		cout << Division(len, time) << endl;
+	}
+	catch (...)
+	{
+		cout << "delete []" << array << endl;
+		delete[] array;
+		throw;
+	}
+	
+	cout << "delete []" << array << endl;
+	delete[]array;
+}
+
+int main()
+{
+	try
+	{
+		Func();
+	}
+	catch (const char* errmsg)
+	{
+		cout << errmsg << endl;
+	}
+	return 0;
+}
+
+
+/*
+int fun(int a, int b)
+{
+	if (b == 0)
+		throw "this is B error";
+	else
+		return a / b;
+}
+
+int main()
+{
+	int a = 0;
+	int b = 0;
+	cin >> a >> b;
+	try{
+		cout << fun(a, b) << endl;
+	}
+	catch (const char* ptr)
+	{
+		cout << ptr << endl;
+	}
+	catch (...)
+	{
+		cout << "error catch" << endl;
+	}
+	
+	return 0;
+}
+
+
+/*
+int main()
+{
+	int T = 0;//表示数据组数
+	int l = 0;
+	int r = 0;
+	set<int,int> s1;
+
+	cin >> T;
+	for (int i = 0; i < T; ++i)
+	{
+		cin >> l >> r ;
+		s1.insert(l, r);
+	}
+
+	return 0;
+}
+
+/*
 class Rate
 {
 public:
