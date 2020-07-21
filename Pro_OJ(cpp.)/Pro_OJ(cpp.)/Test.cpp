@@ -18,11 +18,30 @@
 #include<string.h>
 #include<map>
 #include<set>
-<<<<<<< HEAD
 #include<atomic>
 #include<mutex>
 using namespace std;
 
+
+
+int main()
+{
+	int T = 0;//表示数据组数
+	int l = 0;
+	int r = 0;
+	set<int,int> s1;
+
+	cin >> T;
+	for (int i = 0; i < T; ++i)
+	{
+		cin >> l >> r ;
+		s1.insert(l, r);
+	}
+
+	return 0;
+}
+
+/*
 class Rate
 {
 public:
