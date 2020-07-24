@@ -338,6 +338,7 @@ class Auto_ptr
 			delete _ptr;
 	}
 
+<<<<<<< HEAD
 	Auto_ptr(const Auto_ptr<T>& pa) :_ptr(pa._ptr)
 	{
 		pa._ptr = NULL;
@@ -592,6 +593,10 @@ int main()
 
 
 /*
+=======
+
+
+>>>>>>> 21f7612a63d9b7149e0e98b3a415e203e4c74840
 int main()
 {
 	int T = 0;//表示数据组数

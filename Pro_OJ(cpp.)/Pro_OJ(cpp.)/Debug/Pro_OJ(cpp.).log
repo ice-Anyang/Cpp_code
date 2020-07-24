@@ -1,13 +1,31 @@
+<<<<<<< HEAD
 ﻿生成启动时间为 2020/7/24 20:12:04。
+=======
+﻿生成启动时间为 2020/7/20 19:25:41。
+>>>>>>> 21f7612a63d9b7149e0e98b3a415e203e4c74840
      1>项目“E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Pro_OJ(cpp.)\Pro_OJ(cpp.).vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Test.cpp
          Test.cpp
-       Link:
-         E:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Debug\Pro_OJ(cpp.).exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Debug\Pro_OJ(cpp.).pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Debug\Pro_OJ(cpp.).lib" /MACHINE:X86 Debug\Test.obj
-         Pro_OJ(cpp.).vcxproj -> E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Debug\Pro_OJ(cpp.).exe
-     1>已完成生成项目“E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Pro_OJ(cpp.)\Pro_OJ(cpp.).vcxproj”(Build 个目标)的操作。
+     1>e:\program files (x86)\microsoft visual studio 12.0\vc\include\set(208): error C2100: 非法的间接寻址
+                 e:\ice_bitwork\bit-githup\cpp_code\pro_oj(cpp.)\pro_oj(cpp.)\test.cpp(38): 参见对正在编译的函数 模板 实例化“void std::set<int,int,std::allocator<_Kty>>::insert<int>(_Iter,_Iter)”的引用
+                 with
+                 [
+                     _Kty=int
+         ,            _Iter=int
+                 ]
+                 e:\ice_bitwork\bit-githup\cpp_code\pro_oj(cpp.)\pro_oj(cpp.)\test.cpp(38): 参见对正在编译的函数 模板 实例化“void std::set<int,int,std::allocator<_Kty>>::insert<int>(_Iter,_Iter)”的引用
+                 with
+                 [
+                     _Kty=int
+         ,            _Iter=int
+                 ]
+     1>已完成生成项目“E:\Ice_bitwork\bit-githup\Cpp_code\Pro_OJ(cpp.)\Pro_OJ(cpp.)\Pro_OJ(cpp.).vcxproj”(Build 个目标)的操作 - 失败。
 
-生成成功。
+生成失败。
 
+<<<<<<< HEAD
 已用时间 00:00:00.69
+=======
+已用时间 00:00:00.48
+>>>>>>> 21f7612a63d9b7149e0e98b3a415e203e4c74840
